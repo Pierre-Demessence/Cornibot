@@ -1,0 +1,2 @@
+# Cornibot
+A Discord bot
