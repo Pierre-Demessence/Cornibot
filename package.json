@@ -1,0 +1,50 @@
+{
+    "name": "discordbot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node --inspect=5858 -r ts-node/register src/server.ts",
+        "start:watch": "nodemon",
+        "build": "npm run build:ts && npm run tslint",
+        "build:ts": "tsc",
+        "tslint": "tslint -c tslint.json -p tsconfig.json",
+        "serve:prod": "NODE_ENV=production node dist/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Pierre Demessence",
+    "license": "ISC",
+    "dependencies": {
+        "@google-cloud/speech": "^3.3.2",
+        "@google-cloud/text-to-speech": "^1.4.1",
+        "@types/node": "^12.12.7",
+        "dialogflow": "^0.14.0",
+        "discord.js": "https://github.com/discordjs/discord.js#master",
+        "ffmpeg": "0.0.4",
+        "opusscript": "0.0.7",
+        "stream-buffers": "^3.0.2",
+        "uuid": "^3.3.3"
+    },
+    "devDependencies": {
+        "@types/google-cloud__text-to-speech": "^0.5.0",
+        "@types/stream-buffers": "^3.0.3",
+        "@types/uuid": "^3.4.6",
+        "nodemon": "^1.19.4",
+        "ts-node": "^8.4.1",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.2"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "**/*.test.ts",
+            "**/*.spec.ts",
+            ".git",
+            "node_modules"
+        ],
+        "watch": [
+            "src"
+        ],
+        "exec": "npm start",
+        "ext": "ts"
+    }
+}
