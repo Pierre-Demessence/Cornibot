@@ -3,8 +3,7 @@ import * as Discord from "discord.js";
 import ACommandManager from "./ACommandManager";
 import CommandManager from "./CommandManagers/PrefixCommandManager";
 import Logger from "./Logger";
-
-import { token } from "../config.json";
+import { token } from "./Config";
 
 export default class DiscordBot {
     private client: Discord.Client;
