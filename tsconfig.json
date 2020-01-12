@@ -7,6 +7,8 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
         "outDir": "dist",
         "paths": {
             "*": [
@@ -16,9 +18,17 @@
         "preserveSymlinks": true,
         "strict": true,
         "sourceMap": true,
+        "types": [
+            "mocha",
+            "chai",
+        ],
         "target": "es6",
     },
     "include": [
-        "src/**/*"
+        "src/**/*.ts",
+        "tests/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }

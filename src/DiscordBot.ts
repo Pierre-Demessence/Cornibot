@@ -1,14 +1,9 @@
 import * as Discord from "discord.js";
 
-import { Readable } from "stream";
-
 import ACommandManager from "./ACommandManager";
-import PrefixCommandManager from "./CommandManagers/PrefixCommandManager";
-import TTSCommandManager from "./CommandManagers/TTSCommandManager";
-import * as TextToSpeechModule from "./Modules/TextToSpeechModule";
-
-// tslint:disable-next-line: no-var-requires
-const { token } = require("./../config.json");
+import CommandManager from "./CommandManagers/PrefixCommandManager";
+import Logger from "./Logger";
+import { token } from "./Config";
 
 export default class DiscordBot {
     private client: Discord.Client;
@@ -16,27 +11,17 @@ export default class DiscordBot {
 
     constructor() {
         this.client = new Discord.Client();
-        this.commandManager = new TTSCommandManager(this.client);
+        this.commandManager = new CommandManager(this.client);
     }
 
-    public Start() {
+    public Start(): void {
         this.Init();
         this.Login(token);
     }
 
-    private Init() {
+    private Init(): void {
         this.client.on("ready", () => {
-            console.log(`Logged in as ${this.client.user?.tag}!`);
-        });
-
-        const stdin = process.openStdin();
-        stdin.addListener("data", async (d) => {
-            const connection = this.client.voice?.connections.first();
-            if (!connection) return;
-            const audio = await TextToSpeechModule.TTS(d.toString().trim());
-            connection.play("output.mp3", {
-                bitrate: 32000,
-            });
+            Logger.info(`Logged in as ${this.client.user?.tag}`);
         });
 
         this.client.on("message", async (message) => {
@@ -45,7 +30,7 @@ export default class DiscordBot {
         });
     }
 
-    private Login(tok: string) {
+    private Login(tok: string): void {
         this.client.login(tok);
     }
 }

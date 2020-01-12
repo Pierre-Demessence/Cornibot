@@ -3,14 +3,14 @@ import * as Discord from "discord.js";
 import ACommand from "../ACommand";
 
 export default class PingCommand extends ACommand {
-    public Args: boolean = false;
-    public CoolDown: number = 5;
-    public Description: string = "Explodes!";
-    public Name: string = "countdown";
+    public Args = false;
+    public CoolDown = 5;
+    public Description = "Explodes!";
+    public Name = "countdown";
     protected aliases: string[] = ["tick"];
 
     private CountDownUsers: { [tag: string]: number } = {};
-    public Run(msg: Discord.Message, _argsA: any[] | undefined, _argsO: {[key: string]: any} | undefined): Promise<string> {
+    public Run(msg: Discord.Message, ..._args: string[]): Promise<string> {
         if (!Object.keys(this.CountDownUsers).includes(msg.author.tag)) {
             this.CountDownUsers[msg.author.tag] = Math.floor(Math.random() * 6 + 5);
         }

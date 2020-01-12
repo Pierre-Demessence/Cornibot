@@ -111,6 +111,4 @@ public/
 ### Custom ###
 dist/
 vscode/
-output.mp3
 config.json
-gcloud.json

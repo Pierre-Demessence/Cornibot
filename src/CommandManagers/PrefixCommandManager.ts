@@ -1,28 +1,35 @@
 import * as Discord from "discord.js";
+import stringArgv from 'string-argv';
 
 import ACommandManager from "../ACommandManager";
+import Logger from "../Logger";
 
 // tslint:disable-next-line: no-var-requires
-const { prefix} = require("./../config.json");
+import { prefix } from "../Config";
 
 export default class PrefixManager extends ACommandManager {
-    public Parse(message: Discord.Message | Discord.PartialMessage): void {
+    public async Parse(message: Discord.Message | Discord.PartialMessage): Promise<void> {
         if (!message.content?.startsWith(prefix) || message.author?.bot) return;
 
-        const args = message.content.slice(prefix.length).split(/ +/);
+        Logger.silly(`Received message: ${message.content}`);
+        const args = stringArgv(message.content.slice(prefix.length));
         const commandName = args.shift()?.toLowerCase();
+        Logger.debug(`Command: ${commandName}`);
+        Logger.debug(`Args: ${args.join(",")}`);
 
         if (!commandName) return;
         const command = this.commandLoader.Get(commandName);
 
-        if (!command) return;
-
-        if (command.GuildOnly && message.channel?.type !== "text") {
-            message.reply?.("I can't execute that command inside DMs!");
+        if (!command) {
+            message.reply?.("Unknown command.");
             return;
         }
 
-        console.log(args);
+        if (command.GuildOnly && message.channel?.type !== "text") {
+            message.reply?.("I can't execute this command inside DMs!");
+            return;
+        }
+
         if (command.Args && !args.length) {
             const reply = `You didn't provide any arguments, ${message.author}!`;
 
@@ -33,7 +40,7 @@ export default class PrefixManager extends ACommandManager {
             */
 
             message.channel?.send(reply);
-            return ;
+            return;
         }
 
         /*
@@ -59,15 +66,14 @@ export default class PrefixManager extends ACommandManager {
         */
 
         try {
-            command.Run(message, args, {})
-                .then((answer) => message.reply?.(answer))
-                .catch((error) => {
-                    console.error(error);
-                    message.reply?.("there was an error trying to execute that command!");
-                });
+            console.log("a")
+            const answer = await command.Run(message, ...args)
+            console.log("b")
+            message.reply?.(answer);
+            console.log("c")
         } catch (error) {
-            console.error(error);
-            message.reply?.("there was an error trying to execute that command!");
+            Logger.error("", error);
+            message.reply?.(`there was an error trying to execute that command. ${process.env.NODE_ENV !== "production" ? error.message : ""}`);
         }
         return;
     }
