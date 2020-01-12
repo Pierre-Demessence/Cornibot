@@ -10,7 +10,6 @@ const winstonFormat = winston.format.combine(
     addErrorStack(),
     winston.format.timestamp(),
     winston.format.printf((info) => {
-        console.log(info.error?.stack);
         if (info.stack) return `[${info.timestamp}] ${info.level}: ${info.message.replace(info.stack.match(/Error: (.*)/)?.[1], "")}\n${info.stack}`
         return `[${info.timestamp}] ${info.level}: ${info.message}`;
     }),
