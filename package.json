@@ -8,7 +8,7 @@
         "serve:watch": "nodemon",
         "serve:prod": "NODE_ENV=production node dist/server.js",
         "build": "tsc",
-        "test": "mocha",
+        "test": "mocha mocha -r ts-node/register test/unit/**/*.test.ts",
         "test:coverage": "nyc npm run test",
         "lint": "eslint . --ext .js,.ts",
         "lint:fix": "npm run lint -- --fix"
