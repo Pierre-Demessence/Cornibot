@@ -13,5 +13,5 @@ export default abstract class ACommand {
         return this.aliases;
     }
 
-    public abstract async Run(msg: Discord.Message | Discord.PartialMessage, _argsA: any[] | undefined, _argsO?: {[key: string]: any} | undefined): Promise<string>;
+    public abstract async Run(msg: Discord.Message | Discord.PartialMessage, ...args: readonly string[]): Promise<string>;
 }

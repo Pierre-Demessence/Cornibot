@@ -4,35 +4,47 @@
     "description": "",
     "main": "src/server.js",
     "scripts": {
-        "start": "node --inspect=5858 -r ts-node/register src/server.ts",
-        "start:watch": "nodemon",
-        "build": "npm run build:ts && npm run tslint",
-        "build:ts": "tsc",
-        "tslint": "tslint -c tslint.json -p tsconfig.json",
+        "serve": "node --inspect=5858 -r ts-node/register src/server.ts",
+        "serve:watch": "nodemon",
         "serve:prod": "NODE_ENV=production node dist/server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "tsc",
+        "test": "mocha",
+        "test:coverage": "nyc npm run test",
+        "lint": "eslint . --ext .js,.ts",
+        "lint:fix": "npm run lint -- --fix"
     },
     "author": "Pierre Demessence",
     "license": "ISC",
     "dependencies": {
-        "@google-cloud/speech": "^3.3.2",
-        "@google-cloud/text-to-speech": "^1.4.1",
-        "@types/node": "^12.12.7",
-        "dialogflow": "^0.14.0",
-        "discord.js": "https://github.com/discordjs/discord.js#master",
-        "ffmpeg": "0.0.4",
-        "opusscript": "0.0.7",
-        "stream-buffers": "^3.0.2",
-        "uuid": "^3.3.3"
+        "@types/node": "^12.12.24",
+        "discord.js": "git+https://github.com/discordjs/discord.js.git#a53d865",
+        "string-argv": "^0.3.1",
+        "winston": "^3.2.1",
+        "winston-daily-rotate-file": "^4.4.1"
     },
     "devDependencies": {
-        "@types/google-cloud__text-to-speech": "^0.5.0",
-        "@types/stream-buffers": "^3.0.3",
-        "@types/uuid": "^3.4.6",
+        "@istanbuljs/nyc-config-typescript": "^1.0.1",
+        "@types/chai": "^4.2.7",
+        "@types/mocha": "^5.2.7",
+        "@types/string-argv": "^0.3.0",
+        "@types/triple-beam": "^1.3.0",
+        "@types/ws": "^6.0.4",
+        "@typescript-eslint/eslint-plugin": "^2.15.0",
+        "@typescript-eslint/parser": "^2.15.0",
+        "chai": "^4.2.0",
+        "cross-env": "^6.0.3",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "husky": "^4.0.6",
+        "mocha": "^7.0.0",
         "nodemon": "^1.19.4",
-        "ts-node": "^8.4.1",
+        "nyc": "^15.0.0",
+        "prettier": "^1.19.1",
+        "source-map-support": "^0.5.16",
+        "ts-node": "^8.6.1",
         "tslint": "^5.20.1",
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.4"
     },
     "nodemonConfig": {
         "ignore": [
@@ -44,7 +56,13 @@
         "watch": [
             "src"
         ],
-        "exec": "npm start",
+        "exec": "npm run serve",
         "ext": "ts"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint",
+            "pre-push": "npm run lint"
+        }
     }
 }
