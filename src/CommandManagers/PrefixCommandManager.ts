@@ -5,7 +5,7 @@ import ACommandManager from "../ACommandManager";
 import Logger from "../Logger";
 
 // tslint:disable-next-line: no-var-requires
-import { prefix } from "../../config.json";
+import { prefix } from "../Config";
 
 export default class PrefixManager extends ACommandManager {
     public async Parse(message: Discord.Message | Discord.PartialMessage): Promise<void> {
