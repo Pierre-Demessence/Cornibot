@@ -2,7 +2,7 @@
 
 ## Requirements
 
-* NodeJS > 10.x
+* NodeJS 10.x, 12.x, 13.x (<https://nodejs.org/)>
 
 ## Setup
 
