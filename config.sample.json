@@ -1,4 +1,5 @@
 {
+	"owner": "<userid>",
 	"prefix": "!",
 	"token": "<token>"
 }

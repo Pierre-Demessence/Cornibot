@@ -9,6 +9,8 @@
         "noImplicitReturns": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "outDir": "dist",
         "paths": {
             "*": [

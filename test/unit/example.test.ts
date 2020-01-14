@@ -1,11 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { expect } from 'chai';
 
-describe('bar', () => {
-    it('sync function returns true', () => {
-        expect(true).to.be.true;
-    });
-
-    it('async function returns true', async () => {
-        expect(true).to.be.true;
+describe('Bot', () => {
+    describe('General Tests', () => {
+        // TODO
     });
 });
