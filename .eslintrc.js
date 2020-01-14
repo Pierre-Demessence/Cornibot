@@ -4,18 +4,19 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
-  plugins: ["@typescript-eslint"],
   parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "off" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "off" : "off",
+    "no-console": process.env.NODE_ENV !== "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
         args: "after-used",
-        varsIgnorePattern: "_.*",
+        varsIgnorePattern: "^_",
         argsIgnorePattern: "^_",
         caughtErrorsIgnorePattern: "^_"
       }
@@ -25,14 +26,16 @@ module.exports = {
       {
         ignoreRestArgs: false
       }
-    ],
+    ]
   },
   env: {
-    node: true
+    node: true,
+    mocha: true,
+    mongo: true
   },
   overrides: [
     {
-      files: ["**/__tests__/*.{j,t}s?(x)"],
+      files: ["**/__tests?__/*.{j,t}s?(x)"],
       env: {
         mocha: true
       }

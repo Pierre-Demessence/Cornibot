@@ -1,27 +1,26 @@
 import path from "path";
 import fetch from "node-fetch";
-import fs from "fs";
 import { Canvas } from "canvas-constructor";
-import { CommandoClient, Command, CommandoMessage } from 'discord.js-commando';
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember, MessageAttachment } from "discord.js";
 
 export default class ProfileCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
-            name: 'profile',
+            name: "profile",
             aliases: [],
-            group: 'general',
-            memberName: 'profile',
-            description: 'Gets information about a user.',
-            examples: ['profile @Crawl#3208', 'profile Crawl'],
+            group: "general",
+            memberName: "profile",
+            description: "Gets information about a user.",
+            examples: ["profile @Crawl#3208", "profile Crawl"],
             guildOnly: true,
 
             args: [
                 {
-                    key: 'member',
-                    label: 'user',
-                    prompt: 'What user would you like to snoop on?',
-                    type: 'member',
+                    key: "member",
+                    label: "user",
+                    prompt: "What user would you like to snoop on?",
+                    type: "member",
                     default: (msg: CommandoMessage): GuildMember => msg.member
                 }
             ]
@@ -73,7 +72,7 @@ export default class ProfileCommand extends Command {
             .setTextAlign("left")
             // Let's add all the points!
             .addText(`Score: 12345`, 241, 136)
-            .toBuffer()
+            .toBuffer();
 
         return msg.say(new MessageAttachment(profileCard));
     }

@@ -1,7 +1,20 @@
 {
-    "name": "discordbot",
-    "version": "1.0.0",
-    "description": "",
+    "name": "cornibot",
+    "version": "0.0.1",
+    "description": "A bot in JS",
+    "license": "MIT",
+    "author": {
+        "name": "Pierre Demessence",
+        "email": "pierre.demessence@gmail.com"
+    },
+    "contributors": [
+        "Pierre Demessence"
+    ],
+    "homepage": "https://github.com/Pierre-Demessence/Cornibot",
+    "repository": "github/Pierre-Demessence/Cornibot",
+    "bugs": {
+        "url": "https://github.com/Pierre-Demessence/Cornibot/issues"
+    },
     "main": "src/server.js",
     "scripts": {
         "serve": "node --inspect=5858 -r ts-node/register src/server.ts",
@@ -10,11 +23,9 @@
         "build": "tsc",
         "test": "mocha -r ts-node/register test/unit/**/*.test.ts",
         "test:coverage": "nyc npm run test",
-        "lint": "eslint . --ext .js,.ts",
+        "lint": "tsc --noEmit && eslint . --ext .js,.ts --quiet",
         "lint:fix": "npm run lint -- --fix"
     },
-    "author": "Pierre Demessence",
-    "license": "ISC",
     "dependencies": {
         "@types/node": "^12.12.24",
         "canvas": "^2.6.1",
@@ -55,6 +66,9 @@
         "tslint": "^5.20.1",
         "typescript": "^3.7.4"
     },
+    "husky": {
+        "hooks": {}
+    },
     "nodemonConfig": {
         "ignore": [
             "**/*.test.ts",
@@ -68,7 +82,29 @@
         "exec": "npm run serve",
         "ext": "ts"
     },
-    "husky": {
-        "hooks": {}
+    "nyc": {
+        "extends": "@istanbuljs/nyc-config-typescript",
+        "extension": [
+            ".ts",
+            ".tsx"
+        ],
+        "include": [
+            "src/**/*.ts"
+        ],
+        "exclude": [
+            "**/*.d.ts"
+        ],
+        "reporter": [
+            "html",
+            "text",
+            "text-summary"
+        ],
+        "all": true
+    },
+    "prettier": {
+        "printWidth": 2000,
+        "singleQuote": false,
+        "tabWidth": 4,
+        "useTabs": false
     }
 }

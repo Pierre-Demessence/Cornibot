@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { expect } from 'chai';
+import { expect } from "chai";
 
-describe('Bot', () => {
-    describe('General Tests', () => {
+describe("Bot", () => {
+    describe("General Tests", () => {
         // TODO
     });
 });

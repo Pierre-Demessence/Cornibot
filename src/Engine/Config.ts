@@ -7,7 +7,7 @@ let config = {
 };
 try {
     config = require("../../config.json");
-} catch(err) {
+} catch (err) {
     Logger.error("Can't load config file:", err);
 }
 
