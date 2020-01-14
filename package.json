@@ -27,7 +27,6 @@
         "lint:fix": "npm run lint -- --fix"
     },
     "dependencies": {
-        "@types/node": "^12.12.24",
         "canvas": "^2.6.1",
         "canvas-constructor": "^3.1.0",
         "discord.js": "git+https://github.com/discordjs/discord.js.git#a53d865",
@@ -43,6 +42,7 @@
         "@types/chai": "^4.2.7",
         "@types/mocha": "^5.2.7",
         "@types/moment": "^2.13.0",
+        "@types/node": "^12.12.24",
         "@types/node-fetch": "^2.5.4",
         "@types/string-argv": "^0.3.0",
         "@types/triple-beam": "^1.3.0",
