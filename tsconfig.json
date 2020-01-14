@@ -22,8 +22,7 @@
         "strict": true,
         "target": "es6",
         "types": [
-            "mocha",
-            "chai",
+            "jest"
         ],
     },
     "include": [

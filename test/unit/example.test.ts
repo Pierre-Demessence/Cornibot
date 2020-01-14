@@ -1,8 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { expect } from "chai";
+test("first", () => {
+    expect([1]).toHaveLength(1);
+});
 
-describe("Bot", () => {
-    describe("General Tests", () => {
-        // TODO
-    });
+test("second", () => {
+    expect(true).toBe(true);
 });
