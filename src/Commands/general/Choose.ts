@@ -12,7 +12,7 @@ export default class AddNumbersCommand extends Command {
             memberName: "choose",
             description: "Choose randomly an item in the list.",
             details: oneLine`
-				Choose randomly an item in a list of options given by the user.
+				Choose an item randomly in a list of options given by the user.
 			`,
             examples: ["choose pizza burger pasta"],
 
