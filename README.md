@@ -33,7 +33,9 @@
 ├── assets/         # Static assets (images, etc...)
 ├── dist/           # Build target directory
 └── src/            # Source of the project
-    ├── Commands/   # Commands files. One subdirectoy per CommandGroup (User, Moderation, Fun, etc...) and one file per Command.
+    ├── Commands/   # Commands interpret and answer to user commands. One subdirectoy per CommandGroup (User, Moderation, Fun, etc...) and one file per Command.
     ├── Engine/     # Main code of the bot.
+    ├── Observers/  # Observers check user input based on an pattern and run code. One file per Observer.
+    ├── Services/   # Services are launched at the start of the app and run without user input. One file per Service.
     └── Utils/      # Utility code that is not dependant on the bot.
 ```

@@ -6,12 +6,12 @@ import path from "path";
 import Logger from "../Utils/Logger";
 import { owner, prefix, token } from "./Config";
 import ObserverManager from "./ObserverManager";
-
-const mongod = new MongoMemoryServer();
+import ServiceManager from "./ServiceManager";
 
 export default class DiscordBot {
     private client: CommandoClient;
     private observerManager: ObserverManager;
+    private serviceManager: ServiceManager;
 
     constructor() {
         this.client = new CommandoClient({
@@ -55,6 +55,7 @@ export default class DiscordBot {
             });
 
         this.observerManager = new ObserverManager(this.client, path.join(__dirname, "../Observers"));
+        this.serviceManager = new ServiceManager(this.client, path.join(__dirname, "../Services"));
 
         this.client.on("message", async message => {
             this.observerManager.Observe(message);
@@ -69,5 +70,6 @@ export default class DiscordBot {
         });
         Logger.info(`Connected to DB at ${dbUri}`);
         this.client.login(token);
+        this.serviceManager.StartServices();
     }
 }
