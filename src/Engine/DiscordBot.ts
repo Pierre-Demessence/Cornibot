@@ -1,11 +1,17 @@
 import { CommandoClient, FriendlyError } from "discord.js-commando";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
 import path from "path";
 
 import Logger from "../Utils/Logger";
 import { owner, prefix, token } from "./Config";
+import ObserverManager from "./ObserverManager";
+
+const mongod = new MongoMemoryServer();
 
 export default class DiscordBot {
     private client: CommandoClient;
+    private observerManager: ObserverManager;
 
     constructor() {
         this.client = new CommandoClient({
@@ -40,15 +46,28 @@ export default class DiscordBot {
             })
             .registerGroups([
                 ["general", "General commands"],
+                ["moderation", "Moderation commands"],
                 ["math", "Maths commands"]
             ])
             .registerCommandsIn({
                 dirname: path.join(__dirname, "../Commands"),
                 filter: /^([^.].*)\.[jt]s$/
             });
+
+        this.observerManager = new ObserverManager(this.client, path.join(__dirname, "../Observers"));
+
+        this.client.on("message", async message => {
+            this.observerManager.Observe(message);
+        });
     }
 
-    public Start(): void {
+    public async Start(): Promise<void> {
+        const dbUri = await mongod.getUri(true);
+        await mongoose.connect(dbUri, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true
+        });
+        Logger.info(`Connected to DB at ${dbUri}`);
         this.client.login(token);
     }
 }

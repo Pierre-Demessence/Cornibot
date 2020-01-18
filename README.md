@@ -9,7 +9,7 @@
 1) Install the required packages.
 
     ```bash
-        npm install
+    npm install
     ```
 
 2) Copy `config.sample.json`, rename it to `config.json` and fill it.

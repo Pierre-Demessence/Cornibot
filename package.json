@@ -24,7 +24,9 @@
         "test": "jest",
         "test:coverage": "jest --coverage --watchAll=false",
         "lint": "tsc --noEmit && eslint . --ext .js,.ts --quiet",
-        "lint:fix": "npm run lint -- --fix"
+        "lint:fix": "npm run lint -- --fix",
+        "db:start": "mongod",
+        "db:panel": "mongo-express"
     },
     "dependencies": {
         "canvas": "^2.6.1",
@@ -32,15 +34,21 @@
         "discord.js": "git+https://github.com/discordjs/discord.js.git#a53d865",
         "discord.js-commando": "git+https://github.com/discordjs/Commando.git#4beeec8",
         "moment": "^2.24.0",
+        "mongodb": "^3.5.0",
+        "mongodb-memory-server": "^6.2.2",
         "mongoose": "^5.8.7",
+        "ms": "^2.1.2",
         "node-fetch": "^2.6.0",
         "string-argv": "^0.3.1",
         "winston": "^3.2.1",
         "winston-daily-rotate-file": "^4.4.1"
     },
     "devDependencies": {
-        "@types/jest": "^24.0.25",
+        "@types/jest": "^24.9.0",
         "@types/moment": "^2.13.0",
+        "@types/mongodb-memory-server": "^2.3.0",
+        "@types/mongoose": "^5.5.41",
+        "@types/ms": "^0.7.31",
         "@types/node": "^12.12.24",
         "@types/node-fetch": "^2.5.4",
         "@types/string-argv": "^0.3.0",
@@ -53,6 +61,7 @@
         "eslint-config-prettier": "^6.9.0",
         "eslint-plugin-prettier": "^3.1.2",
         "jest": "^24.9.0",
+        "mongo-express": "^0.54.0",
         "nodemon": "^1.19.4",
         "npm": "^6.13.6",
         "prettier": "^1.19.1",
@@ -63,10 +72,15 @@
         "typescript": "^3.7.4"
     },
     "jest": {
-        "collectCoverageFrom": ["src/**/*.ts"],
+        "collectCoverageFrom": [
+            "src/**/*.ts"
+        ],
         "preset": "ts-jest",
         "testEnvironment": "node",
-        "roots": ["src/", "test/"]
+        "roots": [
+            "src/",
+            "test/"
+        ]
     },
     "nodemonConfig": {
         "ignore": [

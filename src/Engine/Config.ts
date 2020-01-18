@@ -3,7 +3,8 @@ import Logger from "../Utils/Logger";
 let config = {
     owner: "",
     prefix: "!",
-    token: ""
+    token: "",
+    thanksWords: ["thanks"]
 };
 try {
     config = require("../../config.json");
@@ -11,6 +12,7 @@ try {
     Logger.error("Can't load config file:", err);
 }
 
-export const owner = config.owner;
-export const prefix = config.prefix;
-export const token = config.token;
+export const owner: string = config.owner;
+export const prefix: string = config.prefix;
+export const token: string = config.token;
+export const thanksWords: string[] = config.thanksWords;

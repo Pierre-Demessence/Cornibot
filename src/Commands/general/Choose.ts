@@ -15,7 +15,6 @@ export default class AddNumbersCommand extends Command {
 				Choose an item randomly in a list of options given by the user.
 			`,
             examples: ["choose pizza burger pasta"],
-
             args: [
                 {
                     key: "options",

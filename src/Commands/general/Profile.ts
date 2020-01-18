@@ -4,6 +4,8 @@ import { Canvas } from "canvas-constructor";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember, MessageAttachment } from "discord.js";
 
+import User from "../../Models/User";
+
 export default class ProfileCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
@@ -31,6 +33,9 @@ export default class ProfileCommand extends Command {
         const result = await fetch(args.member.user.displayAvatarURL({ format: "png", size: 128 }));
         if (!result.ok) throw new Error("Failed to get the avatar.");
         const avatar = await result.buffer();
+
+        const user = await User.findOne({ discordID: args.member.id });
+        if (!user) throw new Error("User does not exist.");
 
         Canvas.registerFont(path.resolve(path.join(__dirname, "../../../assets/fonts/Roboto-Black.ttf")), "Discord");
         const profileCard = new Canvas(400, 180)
@@ -71,7 +76,7 @@ export default class ProfileCommand extends Command {
             // Now we want to align the text to the left.
             .setTextAlign("left")
             // Let's add all the points!
-            .addText(`Score: 12345`, 241, 136)
+            .addText(`Messages: ${user.get("nbMessages")}`, 241, 136)
             .toBuffer();
 
         return msg.say(new MessageAttachment(profileCard));
