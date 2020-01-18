@@ -1,6 +1,7 @@
 import Logger from "../Utils/Logger";
 
 let config = {
+    mutedRole: "",
     owner: "",
     prefix: "!",
     token: "",
@@ -12,6 +13,7 @@ try {
     Logger.error("Can't load config file:", err);
 }
 
+export const mutedRole: string = config.mutedRole;
 export const owner: string = config.owner;
 export const prefix: string = config.prefix;
 export const token: string = config.token;

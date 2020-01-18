@@ -2,6 +2,7 @@ import { CommandoClient, Command, CommandoMessage, Argument } from "discord.js-c
 import { Message, GuildMember } from "discord.js";
 import ms from "ms";
 import moment from "moment";
+import { mutedRole } from "../../Engine/Config";
 
 export default class UserInfoCommand extends Command {
     constructor(client: CommandoClient) {
@@ -54,11 +55,31 @@ export default class UserInfoCommand extends Command {
     }
 
     async run(msg: CommandoMessage, args: { member: GuildMember; duration: number; reason: string }): Promise<Message | Message[]> {
+        if (msg.member.roles.highest.comparePositionTo(args.member.roles.highest) <= 0) {
+            return msg.reply(`you can't mute ${args.member}`);
+        }
+
+        args.member.roles.add(mutedRole);
         moment.locale("FR_FR");
-        return msg.say(
-            `${args.member} has been muted until ${moment()
-                .add(args.duration, "seconds")
-                .toLocaleString()} (${args.duration}s)${args.reason ? ` for ${args.reason}` : ""}.`
-        );
+        const muteDuration = moment.duration(args.duration, "seconds");
+        const durations: string[] = [];
+        (["year", "month", "day", "hour", "minute", "second"] as moment.unitOfTime.Base[]).forEach(a => {
+            const amount = muteDuration.get(a);
+            if (amount === 0) return;
+            if (amount >= 1) a += "s";
+            durations.push(`${amount} ${a}`);
+        });
+
+        let res: string;
+        if (durations.length > 1) {
+            const last = durations.pop();
+            res = durations.join(", ") + " and " + last;
+        } else res = durations.join(", ");
+        let answer = `${args.member} has been muted for ${res} (${args.duration}s)`;
+        // let answer = `${args.member} has been muted until ${muteDuration.toLocaleString()}`;
+        if (args.reason) answer += ` for ${args.reason}`;
+        answer += ".";
+
+        return msg.say(answer);
     }
 }

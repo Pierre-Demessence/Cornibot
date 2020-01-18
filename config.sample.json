@@ -1,4 +1,5 @@
 {
+	"mutedRole": "<role>",
 	"owner": "<userid>",
 	"prefix": "!",
 	"token": "<token>"
