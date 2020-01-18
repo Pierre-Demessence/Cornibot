@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import path from "path";
 
 import Logger from "../Utils/Logger";
-import { owner, prefix, token } from "./Config";
+import { databaseUri, owner, prefix, token } from "./Config";
 import ObserverManager from "./ObserverManager";
 import ServiceManager from "./ServiceManager";
 
@@ -63,7 +63,11 @@ export default class DiscordBot {
     }
 
     public async Start(): Promise<void> {
-        const dbUri = await mongod.getUri(true);
+        let dbUri: string;
+        if (process.env.NODE_ENV !== "production") {
+            const mongod = new MongoMemoryServer();
+            dbUri = await mongod.getUri(true);
+        } else dbUri = databaseUri;
         await mongoose.connect(dbUri, {
             useUnifiedTopology: true,
             useNewUrlParser: true

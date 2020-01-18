@@ -14,16 +14,6 @@ export default class XPObserver extends Observer {
     }
 
     public async Run(message: Message): Promise<void> {
-        await User.updateOne(
-            {
-                discordID: message.author.id
-            },
-            {
-                $inc: {
-                    nbMessages: 1
-                }
-            },
-            { upsert: true }
-        );
+        await User.updateOne({ discordID: message.author.id }, { $inc: { nbMessages: 1 } }, { upsert: true });
     }
 }

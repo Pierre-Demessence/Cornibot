@@ -1,6 +1,14 @@
 {
+	"databaseUri": "<uri>",
 	"mutedRole": "<role>",
 	"owner": "<userid>",
 	"prefix": "!",
+	"thanksWords": [
+		"thank",
+		"thanks",
+		"thx",
+		"merci",
+		"cimer"
+	],
 	"token": "<token>"
 }

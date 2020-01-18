@@ -4,6 +4,10 @@
 
 * NodeJS 10.x, 12.x, 13.x (<https://nodejs.org/)>
 
+### Production-Only Requirements
+
+* MongoDB <https://www.mongodb.com/download-center/community>
+
 ## Setup
 
 1) Install the required packages.
@@ -39,3 +43,8 @@
     ├── Services/   # Services are launched at the start of the app and run without user input. One file per Service.
     └── Utils/      # Utility code that is not dependant on the bot.
 ```
+
+## Notes
+
+* There's an in-memory mongodb database for development, so you don't have to install anything. (But everything will be reset when the program is stopped.)
+* To ease development with mongodb it's recommended to install Compass (<https://www.mongodb.com/products/compass>) or mongo-express (<https://www.npmjs.com/package/mongo-express>)
