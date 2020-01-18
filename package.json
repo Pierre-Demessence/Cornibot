@@ -61,7 +61,6 @@
         "eslint-config-prettier": "^6.9.0",
         "eslint-plugin-prettier": "^3.1.2",
         "jest": "^24.9.0",
-        "mongo-express": "^0.54.0",
         "nodemon": "^1.19.4",
         "npm": "^6.13.6",
         "prettier": "^1.19.1",
