@@ -74,6 +74,10 @@ export default class DiscordBot extends CommandoClient {
         });
         Logger.info(`Connected to DB at ${dbUri}`);
         await this.login(Config.token);
+        if (this.guilds.size > 1 || this.guilds.first()?.id !== Config.guildID) {
+            this.destroy();
+            Logger.error("One instance of the bot should never be in more than one server.");
+        }
         this.serviceLoader.StartServices();
         this.observerLoader.StartObservers();
     }
