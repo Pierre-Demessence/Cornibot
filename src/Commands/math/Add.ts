@@ -1,10 +1,13 @@
-import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
+
+import CorniCommand from "../../Engine/CorniCommand";
+import DiscordBot from "../../Engine/DiscordBot";
 
 const oneLine = require("common-tags").oneLine;
 
-export default class AddNumbersCommand extends Command {
-    constructor(client: CommandoClient) {
+export default class AddNumbersCommand extends CorniCommand {
+    constructor(client: DiscordBot) {
         super(client, {
             name: "add-numbers",
             aliases: ["add", "add-nums"],

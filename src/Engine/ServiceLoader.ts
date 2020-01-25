@@ -1,15 +1,15 @@
 import * as path from "path";
 import * as fs from "fs";
-import { CommandoClient } from "discord.js-commando";
 
 import Logger from "../Utils/Logger";
 import Service from "./Service";
+import DiscordBot from "./DiscordBot";
 
-export default class ServiceManager {
-    private services: Service[] = [];
-    private client: CommandoClient;
+export default class ServiceLoader {
+    private services: Map<Function, Service> = new Map();
+    private client: DiscordBot;
 
-    constructor(client: CommandoClient, pathToLoad: string) {
+    constructor(client: DiscordBot, pathToLoad: string) {
         this.client = client;
         this.Load(pathToLoad);
     }
@@ -23,17 +23,22 @@ export default class ServiceManager {
             try {
                 if (typeof serviceClass.default !== "function") throw Error(`File ${file} is not a module.`);
                 const instance = new serviceClass.default(this.client);
-                if (!(instance instanceof Service)) throw Error(`Module ${file} does not inherit from Observer.`);
+                if (!(instance instanceof Service)) throw Error(`Module ${file} does not inherit from Service.`);
                 const service = instance as Service;
-                this.services.push(service);
-                Logger.debug(`Registered observer ${service.name}`);
+                this.services.set(serviceClass.default, service);
+                Logger.debug(`Registered service ${service.name}`);
             } catch (e) {
-                Logger.error(`Tried to load a non Observer: ${pathToFile}`, e);
+                Logger.error(`Tried to load a non Service: ${pathToFile}`, e);
             }
         }
     }
 
     public StartServices(): void {
         this.services.forEach(service => service.Run());
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public GetService<T extends Service>(type: new (...args: any[]) => T): T | undefined {
+        return this.services.get(type) as T;
     }
 }

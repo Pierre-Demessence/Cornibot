@@ -1,13 +1,15 @@
 import path from "path";
 import fetch from "node-fetch";
 import { Canvas } from "canvas-constructor";
-import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember, MessageAttachment } from "discord.js";
 
+import CorniCommand from "../../Engine/CorniCommand";
+import DiscordBot from "../../Engine/DiscordBot";
 import User from "../../Models/User";
 
-export default class ProfileCommand extends Command {
-    constructor(client: CommandoClient) {
+export default class ProfileCommand extends CorniCommand {
+    constructor(client: DiscordBot) {
         super(client, {
             name: "profile",
             aliases: [],
@@ -34,7 +36,7 @@ export default class ProfileCommand extends Command {
         if (!result.ok) throw new Error("Failed to get the avatar.");
         const avatar = await result.buffer();
 
-        const user = await User.findOne({ discordID: args.member.id });
+        const user = await User.findOne({ _id: args.member.id });
         if (!user) throw new Error("User does not exist.");
 
         Canvas.registerFont(path.resolve(path.join(__dirname, "../../../assets/fonts/Roboto-Black.ttf")), "Discord");

@@ -1,15 +1,15 @@
-import Observer from "../Engine/Observer";
-import { CommandoClient } from "discord.js-commando";
 import { Message } from "discord.js";
 
-import { thanksWords } from "../Engine/Config";
+import Config from "../Engine/Config";
+import MessageObserver from "../Engine/ObserverTypes/MessageObserver";
 import User from "../Models/User";
+import DiscordBot from "../Engine/DiscordBot";
 
-export default class KarmaObserver extends Observer {
-    constructor(client: CommandoClient) {
+export default class KarmaObserver extends MessageObserver {
+    constructor(client: DiscordBot) {
         super(client, {
             name: "karma",
-            pattern: new RegExp(thanksWords.join("|"))
+            pattern: new RegExp(Config.thanksWords.join("|"), "i")
         });
     }
 
@@ -19,8 +19,8 @@ export default class KarmaObserver extends Observer {
         });
         if (receivers.size === 0) return;
 
-        await User.updateOne({ discordID: message.author.id }, { $inc: { karmaGiven: receivers.size } }, { upsert: true });
-        receivers.forEach(async u => await User.updateOne({ discordID: u.id }, { $inc: { karmaReceived: 1 } }, { upsert: true }));
+        await User.updateOne({ _id: message.author.id }, { $inc: { karmaGiven: receivers.size } }, { upsert: true });
+        receivers.forEach(async u => await User.updateOne({ _id: u.id }, { $inc: { karmaReceived: 1 } }, { upsert: true }));
 
         await message.channel.send(
             `**${message.author.username}** gave karma to **${receivers

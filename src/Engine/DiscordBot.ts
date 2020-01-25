@@ -4,27 +4,27 @@ import mongoose from "mongoose";
 import path from "path";
 
 import Logger from "../Utils/Logger";
-import { databaseUri, owner, prefix, token } from "./Config";
-import ObserverManager from "./ObserverManager";
-import ServiceManager from "./ServiceManager";
+import Config from "./Config";
+import ObserverLoader from "./ObserverLoader";
+import ServiceLoader from "./ServiceLoader";
+import Service from "./Service";
+import { Guild } from "discord.js";
 
-export default class DiscordBot {
-    private client: CommandoClient;
-    private observerManager: ObserverManager;
-    private serviceManager: ServiceManager;
+export default class DiscordBot extends CommandoClient {
+    private observerLoader: ObserverLoader;
+    private serviceLoader: ServiceLoader;
 
     constructor() {
-        this.client = new CommandoClient({
-            owner,
-            commandPrefix: prefix,
+        super({
+            owner: Config.ownerID,
+            commandPrefix: Config.prefix,
             nonCommandEditable: false
         });
 
-        this.client
-            .on("warn", message => Logger.warn(message))
+        this.on("warn", message => Logger.warn(message))
             .on("error", message => Logger.error(message))
             .on("debug", message => Logger.debug(message))
-            .on("ready", () => Logger.info(`Client ready; logged in as ${this.client.user?.tag} (${this.client.user?.id})`))
+            .on("ready", () => Logger.info(`Client ready; logged in as ${this.user?.tag} (${this.user?.id})`))
             .on("disconnect", () => Logger.warn("Disconnected!"))
             .on("reconnecting", () => Logger.warn("Reconnecting..."))
             .on("commandError", (cmd, err) => {
@@ -36,7 +36,7 @@ export default class DiscordBot {
             .on("commandStatusChange", (guild, command, enabled) => Logger.info(`Command ${command.groupID}:${command.memberName} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`))
             .on("groupStatusChange", (guild, group, enabled) => Logger.info(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`));
 
-        this.client.registry
+        this.registry
             .registerDefaultTypes()
             .registerDefaultGroups()
             .registerDefaultCommands({
@@ -54,26 +54,38 @@ export default class DiscordBot {
                 filter: /^([^.].*)\.[jt]s$/
             });
 
-        this.observerManager = new ObserverManager(this.client, path.join(__dirname, "../Observers"));
-        this.serviceManager = new ServiceManager(this.client, path.join(__dirname, "../Services"));
-
-        this.client.on("message", async message => {
-            this.observerManager.Observe(message);
-        });
+        this.observerLoader = new ObserverLoader(this, path.join(__dirname, "../Observers"));
+        this.serviceLoader = new ServiceLoader(this, path.join(__dirname, "../Services"));
     }
 
     public async Start(): Promise<void> {
         let dbUri: string;
         if (process.env.NODE_ENV !== "production") {
-            const mongod = new MongoMemoryServer();
-            dbUri = await mongod.getUri(true);
-        } else dbUri = databaseUri;
+            const mongod = new MongoMemoryServer({
+                instance: {
+                    port: 4242
+                }
+            });
+            dbUri = await mongod.getUri("cornibot-dev");
+        } else dbUri = Config.databaseUri;
         await mongoose.connect(dbUri, {
             useUnifiedTopology: true,
             useNewUrlParser: true
         });
         Logger.info(`Connected to DB at ${dbUri}`);
-        this.client.login(token);
-        this.serviceManager.StartServices();
+        await this.login(Config.token);
+        this.serviceLoader.StartServices();
+        this.observerLoader.StartObservers();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public GetService<T extends Service>(type: new (...args: any[]) => T): T | undefined {
+        return this.serviceLoader.GetService<T>(type);
+    }
+
+    public GetGuild(): Guild {
+        const guild = this.guilds.resolve(Config.guildID);
+        if (!guild) throw Error("Should never happend.");
+        return guild;
     }
 }

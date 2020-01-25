@@ -1,11 +1,14 @@
-import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
+
+import CorniCommand from "../../Engine/CorniCommand";
+import DiscordBot from "../../Engine/DiscordBot";
 
 const oneLine = require("common-tags").oneLine;
 const randomInt = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export default class AddNumbersCommand extends Command {
-    constructor(client: CommandoClient) {
+export default class AddNumbersCommand extends CorniCommand {
+    constructor(client: DiscordBot) {
         super(client, {
             name: "choose",
             group: "general",

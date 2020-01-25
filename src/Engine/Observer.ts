@@ -1,32 +1,44 @@
-import { CommandoClient } from "discord.js-commando";
-import { Message } from "discord.js";
+import Logger from "../Utils/Logger";
+import DiscordBot from "./DiscordBot";
 
-type ObserverInfo = {
-    pattern: RegExp;
-    matchCommands?: boolean;
+export type ObserverInfo = {
     name: string;
 };
 
-export default abstract class Observer {
-    private info: ObserverInfo;
-    protected client: CommandoClient;
+/**
+ * @typeparam T Parameter that the Observer will take
+ */
+export default abstract class Observer<T> {
+    protected info: ObserverInfo;
+    protected client: DiscordBot;
 
-    constructor(client: CommandoClient, info: ObserverInfo) {
+    constructor(client: DiscordBot, info: ObserverInfo) {
         this.client = client;
         this.info = info;
     }
 
-    get pattern(): RegExp {
-        return this.info.pattern;
-    }
-
-    get matchCommands(): boolean {
-        return this.info.matchCommands || false;
-    }
+    abstract get event(): string;
 
     get name(): string {
         return this.info.name;
     }
 
-    public abstract Run(message: Message): void;
+    public CheckAndRun(param: T): void {
+        // Logger.silly(`Checking Observer ${this.name}.`);
+        if (this.Check(param)) {
+            // Logger.silly(`Running Observer ${this.name}.`);
+            try {
+                this.Run(param);
+            } catch (err) {
+                Logger.error(`Error while running ${this.name}:`, err);
+            }
+        }
+    }
+
+    /**
+     * Check whether or not the Observer should be called.
+     */
+    protected abstract Check(param: T): boolean;
+
+    protected abstract Run(param: T): void;
 }

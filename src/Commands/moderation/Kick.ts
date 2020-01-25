@@ -1,8 +1,11 @@
-import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember } from "discord.js";
 
-export default class UserInfoCommand extends Command {
-    constructor(client: CommandoClient) {
+import CorniCommand from "../../Engine/CorniCommand";
+import DiscordBot from "../../Engine/DiscordBot";
+
+export default class UserInfoCommand extends CorniCommand {
+    constructor(client: DiscordBot) {
         super(client, {
             memberName: "kick",
             group: "general",

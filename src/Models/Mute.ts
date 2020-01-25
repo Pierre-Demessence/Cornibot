@@ -1,8 +1,17 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface Mute extends Document {
+    user: string;
+    author: string;
+    dateEnd: Date;
+    channel: string;
+}
 
 const muteSchema = new Schema({
-    _id: Schema.Types.ObjectId,
-    user: { type: Schema.Types.ObjectId, ref: "User" }
+    user: { type: String, ref: "User" },
+    author: { type: String, ref: "User" },
+    dateEnd: Date,
+    channel: String
 });
 
-export default mongoose.model("User", muteSchema);
+export default mongoose.model<Mute>("Mute", muteSchema);

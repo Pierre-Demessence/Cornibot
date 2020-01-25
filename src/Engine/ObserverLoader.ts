@@ -1,16 +1,15 @@
 import * as path from "path";
 import * as fs from "fs";
-import { Message } from "discord.js";
-import { CommandoClient } from "discord.js-commando";
 
 import Logger from "../Utils/Logger";
 import Observer from "./Observer";
+import DiscordBot from "./DiscordBot";
 
-export default class ObserverManager {
-    private observers: Observer[] = [];
-    private client: CommandoClient;
+export default class ObserverLoader {
+    private observers: Observer<unknown>[] = [];
+    private client: DiscordBot;
 
-    constructor(client: CommandoClient, pathToLoad: string) {
+    constructor(client: DiscordBot, pathToLoad: string) {
         this.client = client;
         this.Load(pathToLoad);
     }
@@ -25,7 +24,7 @@ export default class ObserverManager {
                 if (typeof observerClass.default !== "function") throw Error(`File ${file} is not a module.`);
                 const instance = new observerClass.default(this.client);
                 if (!(instance instanceof Observer)) throw Error(`Module ${file} does not inherit from Observer.`);
-                const observer = instance as Observer;
+                const observer = instance as Observer<unknown>;
                 this.observers.push(observer);
                 Logger.debug(`Registered observer ${observer.name}`);
             } catch (e) {
@@ -34,11 +33,10 @@ export default class ObserverManager {
         }
     }
 
-    public Observe(message: Message): void {
-        if (message.author.bot) return;
+    public StartObservers(): void {
         this.observers.forEach(observer => {
-            if (!observer.matchCommands && message.content.startsWith(this.client.commandPrefix)) return;
-            if (observer.pattern.test(message.content)) observer.Run(message);
+            Logger.silly(`Listening to ${observer.event} for ${observer.name}.`);
+            this.client.on(observer.event, observer.CheckAndRun.bind(observer));
         });
     }
 }

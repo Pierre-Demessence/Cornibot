@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    discordID: String,
+    _id: String,
     nbMessages: {
         type: Number,
         default: 0

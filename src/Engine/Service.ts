@@ -1,4 +1,4 @@
-import { CommandoClient } from "discord.js-commando";
+import DiscordBot from "./DiscordBot";
 
 type ServiceInfo = {
     name: string;
@@ -6,9 +6,9 @@ type ServiceInfo = {
 
 export default abstract class Service {
     private info: ServiceInfo;
-    protected client: CommandoClient;
+    protected client: DiscordBot;
 
-    constructor(client: CommandoClient, info: ServiceInfo) {
+    constructor(client: DiscordBot, info: ServiceInfo) {
         this.client = client;
         this.info = info;
     }
