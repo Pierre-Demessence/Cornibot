@@ -2,6 +2,7 @@ import Logger from "../Utils/Logger";
 
 let config = {
     databaseUri: "",
+    forceDatabaseUri: false,
     guildID: "",
     mutedRoleID: "",
     ownerID: "",

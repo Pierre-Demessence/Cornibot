@@ -60,14 +60,15 @@ export default class DiscordBot extends CommandoClient {
 
     public async Start(): Promise<void> {
         let dbUri: string;
-        if (process.env.NODE_ENV !== "production") {
+        if (process.env.NODE_ENV === "production" || Config.forceDatabaseUri) dbUri = Config.databaseUri;
+        else {
             const mongod = new MongoMemoryServer({
                 instance: {
                     port: 4242
                 }
             });
             dbUri = await mongod.getUri("cornibot-dev");
-        } else dbUri = Config.databaseUri;
+        }
         await mongoose.connect(dbUri, {
             useUnifiedTopology: true,
             useNewUrlParser: true
