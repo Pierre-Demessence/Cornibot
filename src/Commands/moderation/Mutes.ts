@@ -37,7 +37,7 @@ export default class MutesCommand extends CorniCommand {
             for (const mute of mutes) {
                 const user = await this.client.users.fetch(mute.user);
                 const author = await this.client.users.fetch(mute.author);
-                const remainingTime = moment(mute.dateEnd).diff(moment(), "seconds");
+                const remainingTime = Math.ceil(moment(mute.dateEnd).diff(moment(), "seconds", true));
                 res += `• ${user.tag} ${remainingTime}s remaining (by ${author.tag}) - Reason: ${mute.reason}\n`;
             }
             return msg.reply(res);
@@ -48,7 +48,7 @@ export default class MutesCommand extends CorniCommand {
         for (const mute of mutes) {
             const author = await this.client.users.fetch(mute.author);
             const date = moment(mute.createdAt);
-            const duration = moment(mute.dateEnd).diff(date, "seconds");
+            const duration = Math.round(moment(mute.dateEnd).diff(date, "seconds", true));
             res += `• [${date.fromNow()}]\t${duration}s\t(by ${author.tag}) - Reason: ${mute.reason}\n`;
         }
         return msg.reply(res);
