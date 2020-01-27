@@ -61,16 +61,20 @@ export default class MuteCommand extends CorniCommand {
 
     async run(msg: CommandoMessage, args: { member: GuildMember; duration: number; reason: string }): Promise<Message | Message[]> {
         if (msg.member.roles.highest.comparePositionTo(args.member.roles.highest) <= 0) {
-            return msg.reply(`you can't mute ${args.member.user.tag}`);
+            return msg.reply(`you can't mute ${args.member.user.tag}.`);
+        }
+        if (args.member.roles.has(Config.mutedRoleID)) {
+            return msg.reply(`${args.member.user.tag} is already muted.`);
         }
 
         const muteDuration = moment.duration(args.duration, "seconds");
 
-        await args.member.roles.add(Config.mutedRoleID);
+        await args.member.roles.add(Config.mutedRoleID, args.reason);
         const mute = await new Mute({
             user: args.member.id,
             author: msg.author.id,
             dateEnd: moment().add(muteDuration),
+            reason: args.reason,
             channel: msg.channel.id
         }).save();
         this.client.GetService(UnmuteService)?.StartTimer(mute);
