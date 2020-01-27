@@ -11,6 +11,14 @@ export default class RegisterOldUsersService extends Service {
 
     public async Run(): Promise<void> {
         const members = await this.client.GetGuild().members.fetch();
-        members?.forEach(member => new User({ _id: member.id }).save());
+        members?.forEach(member =>
+            User.findByIdAndUpdate(
+                member.id,
+                {},
+                {
+                    upsert: true
+                }
+            )
+        );
     }
 }
