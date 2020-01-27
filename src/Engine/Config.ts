@@ -1,12 +1,33 @@
 import Logger from "../Utils/Logger";
 
-let config = {
+export type FeedInfo = {
+    channelID: string;
+    checkInterval: number;
+    enabled: boolean;
+    messageFormat: string;
+    url: string;
+};
+
+type ConfigInfo = {
+    databaseUri: string;
+    forceDatabaseUri: boolean;
+    guildID: string;
+    mutedRoleID: string;
+    ownerID: string;
+    prefix: string;
+    rssFeeds: Array<FeedInfo>;
+    thanksWords: string[];
+    token: string;
+};
+
+let config: ConfigInfo = {
     databaseUri: "",
     forceDatabaseUri: false,
     guildID: "",
     mutedRoleID: "",
     ownerID: "",
     prefix: "!",
+    rssFeeds: [],
     thanksWords: ["thanks"],
     token: ""
 };

@@ -5,6 +5,29 @@
 	"mutedRoleID": "<role>",
 	"ownerID": "<userid>",
 	"prefix": "!",
+	"rssFeeds": [
+		{
+			"channelID": "<channel>",
+			"enabled": true,
+			"checkInterval": 5000,
+			"messageFormat": "New Unity **beta** release ! **%(title)s**\n<%(link)s>",
+			"url": "https://unity3d.com/unity/beta/latest.xml"
+		},
+		{
+			"channelID": "<channel>",
+			"enabled": true,
+			"checkInterval": 5000,
+			"messageFormat": "New Unity release ! **%(title)s**\n<%(link)s>",
+			"url": "https://unity3d.com/unity/releases.xml"
+		},
+		{
+			"channelID": "<channel>",
+			"enabled": true,
+			"checkInterval": 5000,
+			"messageFormat": "New Unity blog post ! **%(title)s**\n%(link)s",
+			"url": "https://blogs.unity3d.com/feed/"
+		}
+	],
 	"thanksWords": [
 		"thank",
 		"thanks",
