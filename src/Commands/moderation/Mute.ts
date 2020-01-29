@@ -60,7 +60,7 @@ export default class MuteCommand extends CorniCommand {
     }
 
     async run(msg: CommandoMessage, args: { member: GuildMember; duration: number; reason: string }): Promise<Message | Message[]> {
-        if (msg.member.roles.highest.comparePositionTo(args.member.roles.highest) <= 0) {
+        if (!msg.guild.me?.permissions.has("ADMINISTRATOR") && msg.member.roles.highest.comparePositionTo(args.member.roles.highest) <= 0) {
             return msg.reply(`you can't mute ${args.member.user.tag}.`);
         }
         if (args.member.roles.has(Config.mutedRoleID)) {
