@@ -8,6 +8,7 @@ import Mute from "../../Models/Mute";
 import UnmuteService from "../../Services/UnmuteService";
 import DiscordBot from "../../Engine/DiscordBot";
 import CorniCommand from "../../Engine/CorniCommand";
+import Logger from "../../Utils/Logger";
 
 export default class MuteCommand extends CorniCommand {
     constructor(client: DiscordBot) {
@@ -97,7 +98,12 @@ export default class MuteCommand extends CorniCommand {
         // let answer = `${args.member} has been muted until ${muteDuration.toLocaleString()}`;
         if (args.reason) answer += ` for ${args.reason}`;
         answer += ".";
-
+        // You have been muted from UDC for 5 hours, 59 minutes and 59 seconds for the following reason : Go the fudge to sleep.
+        try {
+            await args.member.send(`You have been muted from ${msg.guild.name} for **${res} (${args.duration}s)** for the following reason : **${args.reason}**.`);
+        } catch (err) {
+            Logger.error(`Error in command ${this.groupID}:${this.memberName}`, err);
+        }
         return msg.say(answer);
     }
 }
