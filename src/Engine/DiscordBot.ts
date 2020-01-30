@@ -47,7 +47,7 @@ export default class DiscordBot extends CommandoClient {
             .registerGroups([
                 ["general", "General commands"],
                 ["moderation", "Moderation commands"],
-                ["math", "Maths commands"]
+                ["fun", "Fun commands"]
             ])
             .registerCommandsIn({
                 dirname: path.join(__dirname, "../Commands"),

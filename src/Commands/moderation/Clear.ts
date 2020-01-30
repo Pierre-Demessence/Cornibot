@@ -8,12 +8,11 @@ export default class ClearCommand extends CorniCommand {
     constructor(client: DiscordBot) {
         super(client, {
             memberName: "clear",
-            group: "general",
+            group: "moderation",
             name: "clear",
             aliases: ["cls"],
             description: "Clear messages.",
-            details: `Clear messages`,
-            examples: ["clear 10"],
+            examples: ["clear 10", "clear 662065981660725288"],
             clientPermissions: ["MANAGE_MESSAGES"],
             userPermissions: ["MANAGE_MESSAGES"],
             guildOnly: true,

@@ -15,15 +15,15 @@ export default class ProfileCommand extends CorniCommand {
             aliases: [],
             group: "general",
             memberName: "profile",
-            description: "Gets information about a user.",
-            examples: ["profile @Crawl#3208", "profile Crawl"],
+            description: "See the profile card of a user.",
+            examples: ["profile", "profile @Crawl#3208", "profile Crawl"],
             guildOnly: true,
 
             args: [
                 {
                     key: "member",
                     label: "user",
-                    prompt: "What user would you like to snoop on?",
+                    prompt: "What user would you like see the profile card of?",
                     type: "member",
                     default: (msg: CommandoMessage): GuildMember => msg.member
                 }

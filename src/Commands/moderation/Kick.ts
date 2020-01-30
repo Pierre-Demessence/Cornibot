@@ -12,7 +12,7 @@ export default class UserInfoCommand extends CorniCommand {
             name: "kick",
             aliases: [],
             description: "Kick a user.",
-            examples: ["kick @Crawl#3208", "kick Crawl"],
+            examples: ["kick @Foo#0123", "kick Foo"],
             clientPermissions: ["KICK_MEMBERS"],
             userPermissions: ["KICK_MEMBERS"],
             guildOnly: true,
@@ -20,15 +20,22 @@ export default class UserInfoCommand extends CorniCommand {
                 {
                     key: "member",
                     label: "user",
-                    prompt: "What user would you like to snoop on?",
+                    prompt: "What user would you like to kick?",
                     type: "member"
+                },
+                {
+                    key: "reason",
+                    label: "reason",
+                    prompt: "What reason?",
+                    type: "string",
+                    default: ""
                 }
             ]
         });
     }
 
-    async run(msg: CommandoMessage, args: { member: GuildMember }): Promise<Message | Message[]> {
-        // await args.member.kick();
+    async run(msg: CommandoMessage, args: { member: GuildMember; reason: string }): Promise<Message | Message[]> {
+        await args.member.kick(args.reason);
         return msg.say(`${args.member} was kicked.`);
     }
 }

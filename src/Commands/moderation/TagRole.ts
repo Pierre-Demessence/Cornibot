@@ -8,11 +8,10 @@ export default class ClearCommand extends CorniCommand {
     constructor(client: DiscordBot) {
         super(client, {
             memberName: "tagrole",
-            group: "general",
+            group: "moderation",
             name: "tagrole",
             aliases: ["pingrole"],
-            description: "Tag role.",
-            details: `Tag role`,
+            description: "Tag a role with a message.",
             examples: ['tagrole Admin "hi"'],
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MANAGE_ROLES"],

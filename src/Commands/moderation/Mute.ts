@@ -18,7 +18,7 @@ export default class MuteCommand extends CorniCommand {
             name: "mute",
             aliases: [],
             description: "Mute a user.",
-            examples: ["mute @Crawl#3208", "mute Crawl"],
+            examples: ["mute @Foo#0123 60", 'mute @Foo#0123 "3 hours"', 'mute @Foo#0123 60 "some reason"', 'mute @Foo#0123 "3 hours" "some reason"'],
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MUTE_MEMBERS"],
             guildOnly: true,
@@ -26,7 +26,7 @@ export default class MuteCommand extends CorniCommand {
                 {
                     key: "member",
                     label: "user",
-                    prompt: "What user would you like to snoop on?",
+                    prompt: "What user would you like to mute?",
                     type: "member"
                 },
                 {

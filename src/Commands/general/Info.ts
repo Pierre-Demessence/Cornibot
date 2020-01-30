@@ -10,13 +10,11 @@ export default class ProfileCommand extends CorniCommand {
     constructor(client: DiscordBot) {
         super(client, {
             name: "info",
-            aliases: [],
             group: "general",
             memberName: "info",
             description: "Gets information about a user.",
             examples: ["info @Crawl#3208", "info Crawl"],
             guildOnly: true,
-
             args: [
                 {
                     key: "member",

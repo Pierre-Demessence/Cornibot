@@ -11,7 +11,7 @@ export default class AddNumbersCommand extends CorniCommand {
         super(client, {
             name: "add-numbers",
             aliases: ["add", "add-nums"],
-            group: "util",
+            group: "fun",
             memberName: "add",
             description: "Adds numbers together.",
             details: oneLine`
@@ -19,7 +19,6 @@ export default class AddNumbersCommand extends CorniCommand {
 				This command is the envy of all other commands.
 			`,
             examples: ["add-numbers 42 1337"],
-
             args: [
                 {
                     key: "numbers",

@@ -11,9 +11,9 @@ export default class AddNumbersCommand extends CorniCommand {
     constructor(client: DiscordBot) {
         super(client, {
             name: "choose",
-            group: "general",
+            group: "fun",
             memberName: "choose",
-            description: "Choose randomly an item in the list.",
+            description: "Choose an item randomly in a list.",
             details: oneLine`
 				Choose an item randomly in a list of options given by the user.
 			`,
