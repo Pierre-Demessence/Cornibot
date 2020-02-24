@@ -1,6 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+export interface User extends Document {
+    _id: string;
+    nbMessages: number;
+    karmaReceived: number;
+    karmaGiven: number;
+}
+
+const userSchema = new Schema({
     _id: String,
     nbMessages: {
         type: Number,
@@ -16,4 +23,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<User>("User", userSchema);
