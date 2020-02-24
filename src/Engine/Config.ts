@@ -1,4 +1,5 @@
 import Logger from "../Utils/Logger";
+import { Snowflake } from "discord.js";
 
 export type FeedInfo = {
     channelID: string;
@@ -11,9 +12,10 @@ export type FeedInfo = {
 type ConfigInfo = {
     databaseUri: string;
     forceDatabaseUri: boolean;
-    guildID: string;
-    mutedRoleID: string;
-    ownerID: string;
+    freeRoles: Snowflake[];
+    guildID: Snowflake;
+    mutedRoleID: Snowflake;
+    ownerID: Snowflake;
     prefix: string;
     rssFeeds: Array<FeedInfo>;
     thanksWords: string[];
@@ -23,6 +25,7 @@ type ConfigInfo = {
 let config: ConfigInfo = {
     databaseUri: "",
     forceDatabaseUri: false,
+    freeRoles: [],
     guildID: "",
     mutedRoleID: "",
     ownerID: "",

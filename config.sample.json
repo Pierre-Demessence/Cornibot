@@ -1,6 +1,7 @@
 {
 	"databaseUri": "<uri>",
 	"forceDatabaseUri": false,
+	"freeRoles": [],
 	"guildID": "358071411345981440",
 	"mutedRoleID": "<role>",
 	"ownerID": "<userid>",
