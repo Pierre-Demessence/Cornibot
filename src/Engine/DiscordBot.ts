@@ -9,10 +9,13 @@ import ObserverLoader from "./ObserverLoader";
 import ServiceLoader from "./ServiceLoader";
 import Service from "./Service";
 import { Guild } from "discord.js";
+import DiscordTransport from "./DiscordTransport";
 
 export default class DiscordBot extends CommandoClient {
     private observerLoader: ObserverLoader;
     private serviceLoader: ServiceLoader;
+
+    private readonly discordTransport: DiscordTransport;
 
     constructor() {
         super({
@@ -20,6 +23,7 @@ export default class DiscordBot extends CommandoClient {
             commandPrefix: Config.prefix,
             nonCommandEditable: false
         });
+        Logger.add((this.discordTransport = new DiscordTransport(this)));
 
         this.on("warn", message => Logger.warn(message))
             .on("error", message => Logger.error(message))
