@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import path from "path";
 
 import Logger from "../Utils/Logger";
-import Config from "./Config";
 import ObserverLoader from "./ObserverLoader";
 import ServiceLoader from "./ServiceLoader";
 import Service from "./Service";
@@ -16,8 +15,8 @@ export default class Cornibot extends CommandoClient {
 
     constructor() {
         super({
-            owner: Config.ownerID,
-            commandPrefix: Config.prefix,
+            owner: process.env.OWNER_ID,
+            commandPrefix: process.env.CMD_PREFIX,
             nonCommandEditable: false,
         });
 
@@ -64,7 +63,7 @@ export default class Cornibot extends CommandoClient {
 
     public async Start(): Promise<void> {
         let dbUri: string;
-        if (process.env.NODE_ENV === "production" || Config.forceDatabaseUri) dbUri = Config.databaseUri;
+        if ((process.env.NODE_ENV === "production" || process.env.DB_FORCE_EXTERNAL === "TRUE") && process.env.DB_URL) dbUri = process.env.DB_URL;
         else {
             const mongod = new MongoMemoryServer({
                 instance: {
@@ -78,8 +77,8 @@ export default class Cornibot extends CommandoClient {
             useNewUrlParser: true,
         });
         Logger.info(`Connected to DB at ${dbUri}`);
-        await this.login(Config.token);
-        if (this.guilds.cache.size > 1 || this.guilds.cache.first()?.id !== Config.guildID) {
+        await this.login(process.env.TOKEN);
+        if (this.guilds.cache.size > 1 || this.guilds.cache.first()?.id !== process.env.GUILD_ID) {
             this.destroy();
             Logger.error("One instance of the bot should never be in more than one server.");
         }
@@ -93,7 +92,7 @@ export default class Cornibot extends CommandoClient {
     }
 
     public GetGuild(): Guild {
-        const guild = this.guilds.resolve(Config.guildID);
+        const guild = this.guilds.resolve(process.env.GUILD_ID);
         if (!guild) throw Error("Should never happend.");
         return guild;
     }
