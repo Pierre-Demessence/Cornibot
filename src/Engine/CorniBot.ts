@@ -1,7 +1,9 @@
 import { Guild } from "discord.js";
-import { CommandoClient, FriendlyError } from "discord.js-commando";
+import { CommandoClient, FriendlyError, SQLiteProvider } from "discord.js-commando";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import * as sqlite from "sqlite";
+import sqlite3 from "sqlite3";
 import path from "path";
 
 import Logger from "../Utils/Logger";
@@ -39,13 +41,20 @@ export default class Cornibot extends CommandoClient {
             )
             .on("groupStatusChange", (guild, group, enabled) => Logger.info(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`));
 
+        this.observerLoader = new ObserverLoader(this, path.join(__dirname, "../Observers"));
+        this.serviceLoader = new ServiceLoader(this, path.join(__dirname, "../Services"));
+
+        this.Init();
+    }
+
+    private async Init(): Promise<void> {
         this.registry
             .registerDefaultTypes()
             .registerDefaultGroups()
             .registerDefaultCommands({
                 eval: false,
                 prefix: false,
-                commandState: false,
+                commandState: true,
             })
             .registerGroups([
                 ["general", "General commands"],
@@ -57,8 +66,12 @@ export default class Cornibot extends CommandoClient {
                 filter: /^([^.].*)\.[jt]s$/,
             });
 
-        this.observerLoader = new ObserverLoader(this, path.join(__dirname, "../Observers"));
-        this.serviceLoader = new ServiceLoader(this, path.join(__dirname, "../Services"));
+        const db = await sqlite.open({
+            driver: sqlite3.Database,
+            filename: process.env.SQLITE_DB_PATH,
+        });
+
+        this.setProvider(new SQLiteProvider(db));
     }
 
     public async Start(): Promise<void> {
@@ -94,7 +107,7 @@ export default class Cornibot extends CommandoClient {
 
     public GetGuild(): Guild {
         const guild = this.guilds.resolve(process.env.GUILD_ID);
-        if (!guild) throw Error("Should never happend.");
+        if (!guild) throw Error("Bot is in no guild. This shouldn't happen.");
         return guild;
     }
 }

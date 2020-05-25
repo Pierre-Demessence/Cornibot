@@ -7,6 +7,7 @@ declare namespace NodeJS {
         NODE_ENV: "development" | "production";
         OWNER_ID: string;
         PORT?: string;
+        SQLITE_DB_PATH: string;
         TOKEN: string;
     }
 }
