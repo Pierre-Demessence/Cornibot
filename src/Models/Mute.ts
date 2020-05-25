@@ -1,7 +1,6 @@
 import { getModelForClass, prop, Ref } from "@typegoose/typegoose";
 import mongoose from "mongoose";
 
-import ConditionalTimestamps from "./ConditionalTimestamps";
 import { User } from "./User";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
