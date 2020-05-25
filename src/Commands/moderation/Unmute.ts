@@ -32,9 +32,7 @@ export default class UnmuteCommand extends CorniCommand {
     async run2(msg: CommandoMessage, args: { member: GuildMember }): Promise<Message | Message[] | null> {
         const mute = await Mute.findOne({
             user: args.member.id,
-            dateEnd: {
-                $gt: new Date(),
-            },
+            finished: false,
         });
         if (!mute) return msg.reply(`${args.member.user.tag} is not currently muted.`);
         await this.client.GetService(UnmuteService)?.Unmute(mute);

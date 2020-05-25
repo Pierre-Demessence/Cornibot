@@ -71,7 +71,6 @@ export default class MuteCommand extends CorniCommand {
 
         const muteDuration = moment.duration(args.duration, "seconds");
 
-        await args.member.roles.add(Config.mutedRoleID, args.reason);
         const mute = new Mute({
             user: args.member.id,
             author: msg.author.id,
@@ -80,6 +79,7 @@ export default class MuteCommand extends CorniCommand {
             channel: msg.channel.id,
         });
         await mute.save();
+        await args.member.roles.add(Config.mutedRoleID, args.reason);
         this.client.GetService(UnmuteService)?.StartTimer(mute);
 
         const durations: string[] = [];
@@ -100,11 +100,8 @@ export default class MuteCommand extends CorniCommand {
         if (args.reason) answer += ` for ${args.reason}`;
         answer += ".";
         // You have been muted from UDC for 5 hours, 59 minutes and 59 seconds for the following reason : Go the fudge to sleep.
-        try {
-            await args.member.send(`You have been muted from ${msg.guild.name} for **${res} (${args.duration}s)** for the following reason : **${args.reason}**.`);
-        } catch (err) {
-            Logger.error(`Error in command ${this.groupID}:${this.memberName}`, err);
-        }
+
+        await args.member.send(`You have been muted from ${msg.guild.name} for **${res} (${args.duration}s)** for the following reason : **${args.reason}**.`);
         return msg.say(answer);
     }
 }

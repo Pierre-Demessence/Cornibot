@@ -1,5 +1,5 @@
 import { TextChannel } from "discord.js";
-import { isRefType } from "@typegoose/typegoose";
+import { isRefType, DocumentType } from "@typegoose/typegoose";
 import moment from "moment";
 
 import Service from "../Engine/Service";
@@ -16,11 +16,13 @@ export default class UnmuteService extends Service {
         });
     }
 
-    public async Unmute(mute: Mute): Promise<void> {
+    public async Unmute(mute: DocumentType<Mute>): Promise<void> {
         if (!isRefType(mute.user)) throw new Error("The mute has no user");
+        mute.finished = true;
+        mute.save();
         const member = await this.client.GetGuild().members.fetch(mute.user);
         if (!member?.roles.cache.has(Config.mutedRoleID)) {
-            Logger.debug(`${member?.user.tag} was already unmuted.`);
+            Logger.debug(`${member?.user.tag} was not muted.`);
             return;
         }
         const channel = this.client.GetGuild().channels.resolve(mute.channel) as TextChannel;
@@ -31,7 +33,7 @@ export default class UnmuteService extends Service {
         Logger.debug(`${member?.user.tag} has been unmuted.`);
     }
 
-    public StartTimer(mute: Mute): void {
+    public StartTimer(mute: DocumentType<Mute>): void {
         const milliseconds = moment(mute.dateEnd).diff(moment(), "milliseconds");
         Logger.debug(`Starting an Unmute Timer for ${milliseconds}ms`);
         const timer = this.client.setTimeout(() => this.Unmute(mute), milliseconds);
@@ -40,9 +42,7 @@ export default class UnmuteService extends Service {
 
     public async Run(): Promise<void> {
         const mutes = await MuteModel.find({
-            dateEnd: {
-                $gt: new Date(),
-            },
+            finished: false,
         });
         mutes.forEach((mute) => this.StartTimer(mute));
     }

@@ -9,6 +9,8 @@ export class Mute extends TimeStamps {
     user!: Ref<User>;
     @prop({ required: true, ref: User, refType: mongoose.Schema.Types.String })
     author!: Ref<User>;
+    @prop({ default: false })
+    finished!: boolean;
     @prop()
     dateEnd!: Date;
     @prop()
