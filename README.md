@@ -16,7 +16,8 @@
     npm install
     ```
 
-2) Copy `config.sample.json`, rename it to `config.json` and fill it.
+2) Add the required environment variables. You can also rename `env.example` in `.env` and fill it.
+3) Copy `config.sample.json`, rename it to `config.json` and fill it.
 
 ## Usage
 
@@ -47,4 +48,4 @@
 ## Notes
 
 * There's an in-memory mongodb database for development, so you don't have to install anything. (But everything will be reset when the program is stopped.)
-* To ease development with mongodb it's recommended to install Compass (<https://www.mongodb.com/products/compass>).
+* To ease development with mongodb, it's recommended to install Compass (<https://www.mongodb.com/products/compass>).
