@@ -1,4 +1,4 @@
-import DiscordBot from "./DiscordBot";
+import Cornibot from "./CorniBot";
 
 type ServiceInfo = {
     name: string;
@@ -6,9 +6,9 @@ type ServiceInfo = {
 
 export default abstract class Service {
     private info: ServiceInfo;
-    protected client: DiscordBot;
+    protected client: Cornibot;
 
-    constructor(client: DiscordBot, info: ServiceInfo) {
+    constructor(client: Cornibot, info: ServiceInfo) {
         this.client = client;
         this.info = info;
     }

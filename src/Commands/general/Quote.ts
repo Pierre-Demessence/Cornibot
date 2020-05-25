@@ -2,11 +2,11 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message, MessageEmbed, TextChannel, Channel } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 import Logger from "../../Utils/Logger";
 
 export default class QuoteCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             memberName: "quote",
             group: "general",
@@ -19,20 +19,20 @@ export default class QuoteCommand extends CorniCommand {
                     key: "message",
                     label: "messageID",
                     prompt: "What message ID would you like to quote?",
-                    type: "string"
+                    type: "string",
                 },
                 {
                     key: "channel",
                     label: "channelID",
                     prompt: "Please give the channel ID of the message you want to quote.",
                     type: "text-channel",
-                    default: (msg: CommandoMessage): Channel => msg.channel
-                }
-            ]
+                    default: (msg: CommandoMessage): Channel => msg.channel,
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { message: string; channel: TextChannel }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { message: string; channel: TextChannel }): Promise<Message | Message[]> {
         try {
             const message = await args.channel.messages.fetch(args.message);
             return msg.say(

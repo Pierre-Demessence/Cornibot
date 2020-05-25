@@ -1,3 +1,4 @@
+import { Guild } from "discord.js";
 import { CommandoClient, FriendlyError } from "discord.js-commando";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
@@ -8,9 +9,8 @@ import Config from "./Config";
 import ObserverLoader from "./ObserverLoader";
 import ServiceLoader from "./ServiceLoader";
 import Service from "./Service";
-import { Guild } from "discord.js";
 
-export default class DiscordBot extends CommandoClient {
+export default class Cornibot extends CommandoClient {
     private observerLoader: ObserverLoader;
     private serviceLoader: ServiceLoader;
 
@@ -18,12 +18,12 @@ export default class DiscordBot extends CommandoClient {
         super({
             owner: Config.ownerID,
             commandPrefix: Config.prefix,
-            nonCommandEditable: false
+            nonCommandEditable: false,
         });
 
-        this.on("warn", message => Logger.warn(message))
-            .on("error", message => Logger.error(message))
-            .on("debug", message => Logger.debug(message))
+        this.on("warn", (message) => Logger.warn(message))
+            .on("error", (message) => Logger.error(message))
+            .on("debug", (message) => Logger.debug(message))
             .on("ready", () => Logger.info(`Client ready; logged in as ${this.user?.tag} (${this.user?.id})`))
             .on("disconnect", () => Logger.warn("Disconnected!"))
             .on("reconnecting", () => Logger.warn("Reconnecting..."))
@@ -32,8 +32,12 @@ export default class DiscordBot extends CommandoClient {
                 Logger.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
             })
             .on("commandBlock", (msg, reason) => Logger.warn(`Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ""} blocked; ${reason}`))
-            .on("commandPrefixChange", (guild, prefix) => Logger.info(`Prefix ${prefix === "" ? "removed" : `changed to ${prefix || "the default"}`} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`))
-            .on("commandStatusChange", (guild, command, enabled) => Logger.info(`Command ${command.groupID}:${command.memberName} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`))
+            .on("commandPrefixChange", (guild, prefix) =>
+                Logger.info(`Prefix ${prefix === "" ? "removed" : `changed to ${prefix || "the default"}`} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`)
+            )
+            .on("commandStatusChange", (guild, command, enabled) =>
+                Logger.info(`Command ${command.groupID}:${command.memberName} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`)
+            )
             .on("groupStatusChange", (guild, group, enabled) => Logger.info(`Group ${group.id} ${enabled ? "enabled" : "disabled"} ${guild ? `in guild ${guild.name} (${guild.id})` : "globally"}.`));
 
         this.registry
@@ -42,16 +46,16 @@ export default class DiscordBot extends CommandoClient {
             .registerDefaultCommands({
                 eval: false,
                 prefix: false,
-                commandState: false
+                commandState: false,
             })
             .registerGroups([
                 ["general", "General commands"],
                 ["moderation", "Moderation commands"],
-                ["fun", "Fun commands"]
+                ["fun", "Fun commands"],
             ])
             .registerCommandsIn({
                 dirname: path.join(__dirname, "../Commands"),
-                filter: /^([^.].*)\.[jt]s$/
+                filter: /^([^.].*)\.[jt]s$/,
             });
 
         this.observerLoader = new ObserverLoader(this, path.join(__dirname, "../Observers"));
@@ -64,18 +68,18 @@ export default class DiscordBot extends CommandoClient {
         else {
             const mongod = new MongoMemoryServer({
                 instance: {
-                    port: 4242
-                }
+                    port: 4242,
+                },
             });
             dbUri = await mongod.getUri("cornibot-dev");
         }
         await mongoose.connect(dbUri, {
             useUnifiedTopology: true,
-            useNewUrlParser: true
+            useNewUrlParser: true,
         });
         Logger.info(`Connected to DB at ${dbUri}`);
         await this.login(Config.token);
-        if (this.guilds.size > 1 || this.guilds.first()?.id !== Config.guildID) {
+        if (this.guilds.cache.size > 1 || this.guilds.cache.first()?.id !== Config.guildID) {
             this.destroy();
             Logger.error("One instance of the bot should never be in more than one server.");
         }

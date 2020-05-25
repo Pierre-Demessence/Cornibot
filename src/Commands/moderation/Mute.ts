@@ -6,12 +6,12 @@ import moment from "moment";
 import Config from "../../Engine/Config";
 import Mute from "../../Models/Mute";
 import UnmuteService from "../../Services/UnmuteService";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 import CorniCommand from "../../Engine/CorniCommand";
 import Logger from "../../Utils/Logger";
 
 export default class MuteCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             memberName: "mute",
             group: "moderation",
@@ -22,12 +22,13 @@ export default class MuteCommand extends CorniCommand {
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MUTE_MEMBERS"],
             guildOnly: true,
+            deleteCommand: true,
             args: [
                 {
                     key: "member",
                     label: "user",
                     prompt: "What user would you like to mute?",
-                    type: "member"
+                    type: "member",
                 },
                 {
                     key: "duration",
@@ -47,24 +48,24 @@ export default class MuteCommand extends CorniCommand {
                         if (duration <= 0) return false;
                         if (duration >= ms("100 years") / 1000) return false;
                         return true;
-                    }
+                    },
                 },
                 {
                     key: "reason",
                     label: "reason",
                     prompt: "What reason?",
                     type: "string",
-                    default: ""
-                }
-            ]
+                    default: "",
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { member: GuildMember; duration: number; reason: string }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { member: GuildMember; duration: number; reason: string }): Promise<Message | Message[]> {
         if (!msg.guild.me?.permissions.has("ADMINISTRATOR") && msg.member.roles.highest.comparePositionTo(args.member.roles.highest) <= 0) {
             return msg.reply(`you can't mute ${args.member.user.tag}.`);
         }
-        if (args.member.roles.has(Config.mutedRoleID)) {
+        if (args.member.roles.cache.has(Config.mutedRoleID)) {
             return msg.reply(`${args.member.user.tag} is already muted.`);
         }
 
@@ -76,13 +77,12 @@ export default class MuteCommand extends CorniCommand {
             author: msg.author.id,
             dateEnd: moment().add(muteDuration),
             reason: args.reason,
-            channel: msg.channel.id
+            channel: msg.channel.id,
         }).save();
         this.client.GetService(UnmuteService)?.StartTimer(mute);
 
-        moment.locale("FR_FR");
         const durations: string[] = [];
-        (["year", "month", "day", "hour", "minute", "second"] as moment.unitOfTime.Base[]).forEach(a => {
+        (["year", "month", "day", "hour", "minute", "second"] as moment.unitOfTime.Base[]).forEach((a) => {
             const amount = muteDuration.get(a);
             if (amount === 0) return;
             if (amount >= 1) a += "s";

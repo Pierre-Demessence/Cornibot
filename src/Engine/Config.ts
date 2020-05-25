@@ -32,7 +32,7 @@ let config: ConfigInfo = {
     prefix: "!",
     rssFeeds: [],
     thanksWords: ["thanks"],
-    token: ""
+    token: "",
 };
 try {
     config = require("../../config.json");

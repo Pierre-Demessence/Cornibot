@@ -5,11 +5,11 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember, MessageAttachment } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 import User from "../../Models/User";
 
 export default class ProfileCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             name: "profile",
             aliases: [],
@@ -25,13 +25,13 @@ export default class ProfileCommand extends CorniCommand {
                     label: "user",
                     prompt: "What user would you like see the profile card of?",
                     type: "member",
-                    default: (msg: CommandoMessage): GuildMember => msg.member
-                }
-            ]
+                    default: (msg: CommandoMessage): GuildMember => msg.member,
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { member: GuildMember }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { member: GuildMember }): Promise<Message | Message[]> {
         const result = await fetch(args.member.user.displayAvatarURL({ format: "png", size: 128 }));
         if (!result.ok) throw new Error("Failed to get the avatar.");
         const avatar = await result.buffer();

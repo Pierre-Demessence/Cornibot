@@ -2,14 +2,14 @@ import { Message } from "discord.js";
 
 import User from "../Models/User";
 import MessageObserver from "../Engine/ObserverTypes/MessageObserver";
-import DiscordBot from "../Engine/DiscordBot";
+import Cornibot from "../Engine/CorniBot";
 
 export default class XPObserver extends MessageObserver {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             name: "xp",
             pattern: /.*/,
-            matchCommands: true
+            matchCommands: true,
         });
     }
 

@@ -112,3 +112,4 @@ public/
 dist/
 vscode/
 config.json
+.env

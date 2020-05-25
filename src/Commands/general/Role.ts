@@ -2,15 +2,16 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message, Role } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 import Config from "../../Engine/Config";
 
 export default class AddNumbersCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             name: "role",
             group: "general",
             memberName: "role",
+            allowedChannels: ["667843839356305468"],
             description: "Get info about roles",
             examples: ["role list"],
             args: [
@@ -20,16 +21,16 @@ export default class AddNumbersCommand extends CorniCommand {
                     prompt: "What action would you like to do? (<list|add|remove>)",
                     type: "string",
                     default: "list",
-                    oneOf: ["list", "add", "remove"]
+                    oneOf: ["list", "add", "remove"],
                 },
                 {
                     key: "role",
                     label: "role",
                     prompt: "What role would you like to add/remove?",
                     type: "role",
-                    default: ""
-                }
-            ]
+                    default: "",
+                },
+            ],
         });
     }
 
@@ -42,12 +43,12 @@ export default class AddNumbersCommand extends CorniCommand {
         return freeRoles;
     }
 
-    async run(msg: CommandoMessage, args: { action: "list" | "add" | "remove"; role: Role }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { action: "list" | "add" | "remove"; role: Role }): Promise<Message | Message[]> {
         const freeRoles = await this.GetFreeRoles();
         switch (args.action) {
             case "list": {
                 let message = "**The following roles are available on this server:**```\n";
-                freeRoles.forEach(role => {
+                freeRoles.forEach((role) => {
                     message += `${this.client.commandPrefix}role add/remove ${role.name}\n`;
                 });
                 message += "```";

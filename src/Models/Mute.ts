@@ -15,7 +15,7 @@ const muteSchema = new Schema(
         author: { type: String, ref: "User" },
         dateEnd: Date,
         reason: String,
-        channel: String
+        channel: String,
     },
     { timestamps: true }
 );

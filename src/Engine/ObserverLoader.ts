@@ -3,19 +3,19 @@ import * as fs from "fs";
 
 import Logger from "../Utils/Logger";
 import Observer from "./Observer";
-import DiscordBot from "./DiscordBot";
+import Cornibot from "./CorniBot";
 
 export default class ObserverLoader {
     private observers: Observer<unknown>[] = [];
-    private client: DiscordBot;
+    private client: Cornibot;
 
-    constructor(client: DiscordBot, pathToLoad: string) {
+    constructor(client: Cornibot, pathToLoad: string) {
         this.client = client;
         this.Load(pathToLoad);
     }
 
     private async Load(pathToLoad: string): Promise<void> {
-        const observerFiles = fs.readdirSync(pathToLoad).filter(file => file.endsWith(".ts"));
+        const observerFiles = fs.readdirSync(pathToLoad).filter((file) => file.endsWith(".ts"));
 
         for (const file of observerFiles) {
             const pathToFile = path.resolve(pathToLoad, file);
@@ -34,7 +34,7 @@ export default class ObserverLoader {
     }
 
     public StartObservers(): void {
-        this.observers.forEach(observer => {
+        this.observers.forEach((observer) => {
             Logger.silly(`Listening to ${observer.event} for ${observer.name}.`);
             this.client.on(observer.event, observer.CheckAndRun.bind(observer));
         });

@@ -2,10 +2,10 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 
 export default class UserInfoCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             memberName: "kick",
             group: "general",
@@ -21,20 +21,20 @@ export default class UserInfoCommand extends CorniCommand {
                     key: "member",
                     label: "user",
                     prompt: "What user would you like to kick?",
-                    type: "member"
+                    type: "member",
                 },
                 {
                     key: "reason",
                     label: "reason",
                     prompt: "What reason?",
                     type: "string",
-                    default: ""
-                }
-            ]
+                    default: "",
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { member: GuildMember; reason: string }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { member: GuildMember; reason: string }): Promise<Message | Message[]> {
         await args.member.kick(args.reason);
         return msg.say(`${args.member} was kicked.`);
     }

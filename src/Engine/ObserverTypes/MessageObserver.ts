@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 
 import Observer, { ObserverInfo } from "../Observer";
-import DiscordBot from "../DiscordBot";
+import Cornibot from "../CorniBot";
 
 type MessageObserverInfo = ObserverInfo & {
     matchCommands?: boolean;
@@ -11,7 +11,7 @@ type MessageObserverInfo = ObserverInfo & {
 export default abstract class MessageObserver extends Observer<Message> {
     protected info: MessageObserverInfo;
 
-    constructor(client: DiscordBot, info: MessageObserverInfo) {
+    constructor(client: Cornibot, info: MessageObserverInfo) {
         super(client, info);
         this.client = client;
         this.info = info;

@@ -2,10 +2,10 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 
 export default class ClearCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             memberName: "clear",
             group: "moderation",
@@ -23,13 +23,13 @@ export default class ClearCommand extends CorniCommand {
                     prompt: "What number of message would you like to delete?",
                     type: "integer|message",
                     min: 0,
-                    max: 99
-                }
-            ]
+                    max: 99,
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { numbers: number | CommandoMessage }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { numbers: number | CommandoMessage }): Promise<Message | Message[]> {
         // If the parameter is a message ID
         if (args.numbers instanceof CommandoMessage) {
             // Retrieve all messages that are more recent

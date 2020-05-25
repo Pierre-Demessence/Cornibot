@@ -2,10 +2,10 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message, Role } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 
 export default class ClearCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             memberName: "tagrole",
             group: "moderation",
@@ -21,19 +21,19 @@ export default class ClearCommand extends CorniCommand {
                     key: "role",
                     label: "role",
                     prompt: "What role would you like to ping?",
-                    type: "role"
+                    type: "role",
                 },
                 {
                     key: "message",
                     label: "message",
                     prompt: "What message would you like to write?",
-                    type: "string"
-                }
-            ]
+                    type: "string",
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { role: Role; message: string }): Promise<Message | Message[] | null> {
+    async run2(msg: CommandoMessage, args: { role: Role; message: string }): Promise<Message | Message[] | null> {
         const before = args.role.mentionable;
         if (!args.role.mentionable) {
             const me = msg.guild.me;

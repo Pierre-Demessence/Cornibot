@@ -1,5 +1,9 @@
 import "reflect-metadata";
+require("dotenv-safe").config();
 
-import DiscordBot from "./Engine/DiscordBot";
+import Cornibot from "./Engine/CorniBot";
+import moment from "moment";
 
-new DiscordBot().Start();
+moment.locale("en");
+
+new Cornibot().Start();

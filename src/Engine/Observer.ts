@@ -1,5 +1,5 @@
 import Logger from "../Utils/Logger";
-import DiscordBot from "./DiscordBot";
+import Cornibot from "./CorniBot";
 
 export type ObserverInfo = {
     name: string;
@@ -10,9 +10,9 @@ export type ObserverInfo = {
  */
 export default abstract class Observer<T> {
     protected info: ObserverInfo;
-    protected client: DiscordBot;
+    protected client: Cornibot;
 
-    constructor(client: DiscordBot, info: ObserverInfo) {
+    constructor(client: Cornibot, info: ObserverInfo) {
         this.client = client;
         this.info = info;
     }

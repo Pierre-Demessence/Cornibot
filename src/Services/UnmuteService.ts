@@ -5,23 +5,23 @@ import Service from "../Engine/Service";
 import MuteModel, { Mute } from "../Models/Mute";
 import Config from "../Engine/Config";
 import Logger from "../Utils/Logger";
-import DiscordBot from "../Engine/DiscordBot";
+import Cornibot from "../Engine/CorniBot";
 
 export default class UnmuteService extends Service {
     private timers: Map<Mute, NodeJS.Timer> = new Map();
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
-            name: "unmute"
+            name: "unmute",
         });
     }
 
     public async Unmute(mute: Mute): Promise<void> {
         const member = await this.client.GetGuild().members.fetch(mute.user);
-        if (!member?.roles.has(Config.mutedRoleID)) {
+        if (!member?.roles.cache.has(Config.mutedRoleID)) {
             Logger.debug(`${member?.user.tag} was already unmuted.`);
             return;
         }
-        const channel = this.client.GetGuild().channels.get(mute.channel) as TextChannel;
+        const channel = this.client.GetGuild().channels.resolve(mute.channel) as TextChannel;
         await member?.roles.remove(Config.mutedRoleID);
         const timer = this.timers.get(mute);
         if (timer) this.client.clearTimeout(timer);
@@ -39,9 +39,9 @@ export default class UnmuteService extends Service {
     public async Run(): Promise<void> {
         const mutes = await MuteModel.find({
             dateEnd: {
-                $gt: new Date()
-            }
+                $gt: new Date(),
+            },
         });
-        mutes.forEach(mute => this.StartTimer(mute));
+        mutes.forEach((mute) => this.StartTimer(mute));
     }
 }

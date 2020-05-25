@@ -4,14 +4,14 @@ import { TextChannel } from "discord.js";
 import { sprintf } from "sprintf-js";
 
 import Service from "../Engine/Service";
-import DiscordBot from "../Engine/DiscordBot";
+import Cornibot from "../Engine/CorniBot";
 import Config, { FeedInfo } from "../Engine/Config";
 import { Clamp } from "../Utils/Math";
 
 export default class RSSParser extends Service {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
-            name: "rss_parser"
+            name: "rss_parser",
         });
     }
 
@@ -23,7 +23,7 @@ export default class RSSParser extends Service {
     private FormatFeedItem(item: Parser.Item, messageFormat: string): string {
         return sprintf(messageFormat || this.DEFAULT_MESSAGE_FORMAT, {
             title: item.title,
-            link: item.link
+            link: item.link,
         });
     }
 
@@ -34,10 +34,10 @@ export default class RSSParser extends Service {
         setInterval(async () => {
             const feed = await parser.parseURL(feedInfo.url);
             let last: moment.Moment | undefined = undefined;
-            feed.items?.forEach(item => {
+            feed.items?.forEach((item) => {
                 if (last === undefined || moment(item.pubDate).isAfter(last)) last = moment(item.pubDate);
                 if (lastItemDate && moment(item.pubDate).isAfter(lastItemDate)) {
-                    const channel = this.client.GetGuild().channels.get(feedInfo.channelID) as TextChannel;
+                    const channel = this.client.GetGuild().channels.resolve(feedInfo.channelID) as TextChannel;
                     channel.send(this.FormatFeedItem(item, feedInfo.messageFormat));
                 }
             });
@@ -46,6 +46,6 @@ export default class RSSParser extends Service {
     }
 
     public async Run(): Promise<void> {
-        Config.rssFeeds.filter(f => f.enabled).forEach(feedInfo => this.WatchFeed(feedInfo));
+        Config.rssFeeds.filter((f) => f.enabled).forEach((feedInfo) => this.WatchFeed(feedInfo));
     }
 }

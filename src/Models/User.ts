@@ -11,16 +11,16 @@ const userSchema = new Schema({
     _id: String,
     nbMessages: {
         type: Number,
-        default: 0
+        default: 0,
     },
     karmaReceived: {
         type: Number,
-        default: 0
+        default: 0,
     },
     karmaGiven: {
         type: Number,
-        default: 0
-    }
+        default: 0,
+    },
 });
 
 export default mongoose.model<User>("User", userSchema);

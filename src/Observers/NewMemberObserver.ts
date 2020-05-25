@@ -2,12 +2,12 @@ import { GuildMember } from "discord.js";
 
 import GuildMemberAddObserver from "../Engine/ObserverTypes/GuildMemberAddObserver";
 import User from "../Models/User";
-import DiscordBot from "../Engine/DiscordBot";
+import Cornibot from "../Engine/CorniBot";
 
 export default class NewMemberObserver extends GuildMemberAddObserver {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
-            name: "new_member"
+            name: "new_member",
         });
     }
 

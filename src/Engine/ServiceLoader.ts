@@ -3,19 +3,19 @@ import * as fs from "fs";
 
 import Logger from "../Utils/Logger";
 import Service from "./Service";
-import DiscordBot from "./DiscordBot";
+import Cornibot from "./CorniBot";
 
 export default class ServiceLoader {
     private services: Map<Function, Service> = new Map();
-    private client: DiscordBot;
+    private client: Cornibot;
 
-    constructor(client: DiscordBot, pathToLoad: string) {
+    constructor(client: Cornibot, pathToLoad: string) {
         this.client = client;
         this.Load(pathToLoad);
     }
 
     private async Load(pathToLoad: string): Promise<void> {
-        const serviceFiles = fs.readdirSync(pathToLoad).filter(file => file.endsWith(".ts"));
+        const serviceFiles = fs.readdirSync(pathToLoad).filter((file) => file.endsWith(".ts"));
 
         for (const file of serviceFiles) {
             const pathToFile = path.resolve(pathToLoad, file);
@@ -34,7 +34,7 @@ export default class ServiceLoader {
     }
 
     public StartServices(): void {
-        this.services.forEach(service => service.Run());
+        this.services.forEach((service) => service.Run());
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

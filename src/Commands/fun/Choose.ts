@@ -2,13 +2,13 @@ import { CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
-import DiscordBot from "../../Engine/DiscordBot";
+import Cornibot from "../../Engine/CorniBot";
 
 const oneLine = require("common-tags").oneLine;
 const randomInt = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
 export default class AddNumbersCommand extends CorniCommand {
-    constructor(client: DiscordBot) {
+    constructor(client: Cornibot) {
         super(client, {
             name: "choose",
             group: "fun",
@@ -24,13 +24,13 @@ export default class AddNumbersCommand extends CorniCommand {
                     label: "options",
                     prompt: "What options would you like to add? Every message you send will be interpreted as a single option.",
                     type: "string",
-                    infinite: true
-                }
-            ]
+                    infinite: true,
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: { options: string[] }): Promise<Message | Message[]> {
+    async run2(msg: CommandoMessage, args: { options: string[] }): Promise<Message | Message[]> {
         const choice = args.options[randomInt(0, args.options.length - 1)];
         return msg.reply(`${choice}`);
     }
