@@ -39,8 +39,8 @@
 └── src/            # Source of the project
     ├── Commands/   # Commands interpret and answer to user commands. One subdirectoy per CommandGroup (User, Moderation, Fun, etc...) and one file per Command.
     ├── Engine/     # Main code of the bot.
-    ├── Observers/  # Observers check user input based on an pattern and run code. One file per Observer.
-    ├── Services/   # Services are launched at the start of the app and run without user input. One file per Service. They can be accessed from Commands and Observers.
+    ├── Observers/  # Observers check user input based on a pattern and run code. One file per Observer.
+    ├── Services/   # Services are launched at startup and run without user input. One file per Service. They can be accessed from Commands and Observers.
     └── Utils/      # Utility code that is not dependent on the bot.
 ```
 
