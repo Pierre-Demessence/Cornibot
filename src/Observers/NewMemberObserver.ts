@@ -12,6 +12,6 @@ export default class NewMemberObserver extends GuildMemberAddObserver {
     }
 
     public async Run(member: GuildMember): Promise<void> {
-        await new User({ _id: member.id }).save();
+        await new User({ did: member.id }).save();
     }
 }

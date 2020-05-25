@@ -1,5 +1,6 @@
-import moment from "moment";
 import { TextChannel } from "discord.js";
+import { isRefType } from "@typegoose/typegoose";
+import moment from "moment";
 
 import Service from "../Engine/Service";
 import MuteModel, { Mute } from "../Models/Mute";
@@ -16,6 +17,7 @@ export default class UnmuteService extends Service {
     }
 
     public async Unmute(mute: Mute): Promise<void> {
+        if (!isRefType(mute.user)) throw new Error("The mute has no user");
         const member = await this.client.GetGuild().members.fetch(mute.user);
         if (!member?.roles.cache.has(Config.mutedRoleID)) {
             Logger.debug(`${member?.user.tag} was already unmuted.`);

@@ -1,26 +1,16 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { getModelForClass, prop } from "@typegoose/typegoose";
 
-export interface User extends Document {
-    _id: string;
-    nbMessages: number;
-    karmaReceived: number;
-    karmaGiven: number;
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+
+export class User extends TimeStamps {
+    @prop()
+    public _id!: string;
+    @prop({ default: 0 })
+    nbMessages!: number;
+    @prop({ default: 0 })
+    karmaReceived!: number;
+    @prop({ default: 0 })
+    karmaGiven!: number;
 }
 
-const userSchema = new Schema({
-    _id: String,
-    nbMessages: {
-        type: Number,
-        default: 0,
-    },
-    karmaReceived: {
-        type: Number,
-        default: 0,
-    },
-    karmaGiven: {
-        type: Number,
-        default: 0,
-    },
-});
-
-export default mongoose.model<User>("User", userSchema);
+export default getModelForClass(User);

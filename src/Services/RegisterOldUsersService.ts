@@ -1,6 +1,7 @@
 import Service from "../Engine/Service";
 import User from "../Models/User";
 import Cornibot from "../Engine/CorniBot";
+import Logger from "../Utils/Logger";
 
 export default class RegisterOldUsersService extends Service {
     constructor(client: Cornibot) {
@@ -10,15 +11,19 @@ export default class RegisterOldUsersService extends Service {
     }
 
     public async Run(): Promise<void> {
+        Logger.silly("Registering current users...");
         const members = await this.client.GetGuild().members.fetch();
-        members?.forEach((member) =>
-            User.findByIdAndUpdate(
+        for (const key in members) {
+            const member = members.get(key);
+            if (!member) continue;
+            await User.findByIdAndUpdate(
                 member.id,
                 {},
                 {
                     upsert: true,
                 }
-            )
-        );
+            );
+        }
+        Logger.silly("Current users registration done.");
     }
 }

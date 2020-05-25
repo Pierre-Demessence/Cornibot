@@ -1,23 +1,21 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { getModelForClass, prop, Ref } from "@typegoose/typegoose";
+import mongoose from "mongoose";
 
-export interface Mute extends Document {
-    user: string;
-    author: string;
-    dateEnd: Date;
-    reason: string;
-    channel: string;
-    createdAt: Date;
+import ConditionalTimestamps from "./ConditionalTimestamps";
+import { User } from "./User";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+
+export class Mute extends TimeStamps {
+    @prop({ required: true, ref: User, refType: mongoose.Schema.Types.String })
+    user!: Ref<User>;
+    @prop({ required: true, ref: User, refType: mongoose.Schema.Types.String })
+    author!: Ref<User>;
+    @prop()
+    dateEnd!: Date;
+    @prop()
+    reason!: string;
+    @prop()
+    channel!: string;
 }
 
-const muteSchema = new Schema(
-    {
-        user: { type: String, ref: "User" },
-        author: { type: String, ref: "User" },
-        dateEnd: Date,
-        reason: String,
-        channel: String,
-    },
-    { timestamps: true }
-);
-
-export default mongoose.model<Mute>("Mute", muteSchema);
+export default getModelForClass(Mute);

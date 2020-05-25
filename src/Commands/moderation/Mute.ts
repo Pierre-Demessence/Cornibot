@@ -72,13 +72,14 @@ export default class MuteCommand extends CorniCommand {
         const muteDuration = moment.duration(args.duration, "seconds");
 
         await args.member.roles.add(Config.mutedRoleID, args.reason);
-        const mute = await new Mute({
+        const mute = new Mute({
             user: args.member.id,
             author: msg.author.id,
             dateEnd: moment().add(muteDuration),
             reason: args.reason,
             channel: msg.channel.id,
-        }).save();
+        });
+        await mute.save();
         this.client.GetService(UnmuteService)?.StartTimer(mute);
 
         const durations: string[] = [];

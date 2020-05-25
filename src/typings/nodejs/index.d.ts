@@ -4,6 +4,7 @@ declare namespace NodeJS {
         DB_FORCE_EXTERNAL?: string;
         DB_URL?: string;
         GUILD_ID: string;
+        NODE_ENV: "development" | "production";
         OWNER_ID: string;
         PORT?: string;
         TOKEN: string;

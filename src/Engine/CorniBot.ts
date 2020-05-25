@@ -22,7 +22,7 @@ export default class Cornibot extends CommandoClient {
 
         this.on("warn", (message) => Logger.warn(message))
             .on("error", (message) => Logger.error(message))
-            .on("debug", (message) => Logger.debug(message))
+            .on("debug", (message) => Logger.silly(message))
             .on("ready", () => Logger.info(`Client ready; logged in as ${this.user?.tag} (${this.user?.id})`))
             .on("disconnect", () => Logger.warn("Disconnected!"))
             .on("reconnecting", () => Logger.warn("Reconnecting..."))
@@ -75,6 +75,7 @@ export default class Cornibot extends CommandoClient {
         await mongoose.connect(dbUri, {
             useUnifiedTopology: true,
             useNewUrlParser: true,
+            useFindAndModify: false,
         });
         Logger.info(`Connected to DB at ${dbUri}`);
         await this.login(process.env.TOKEN);

@@ -26,7 +26,7 @@ export default class ObserverLoader {
                 if (!(instance instanceof Observer)) throw Error(`Module ${file} does not inherit from Observer.`);
                 const observer = instance as Observer<unknown>;
                 this.observers.push(observer);
-                Logger.debug(`Registered observer ${observer.name}`);
+                Logger.silly(`Registered observer ${observer.name}`);
             } catch (e) {
                 Logger.error(`Tried to load a non Observer: ${pathToFile}`, e);
             }

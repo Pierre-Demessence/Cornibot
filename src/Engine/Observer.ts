@@ -24,9 +24,7 @@ export default abstract class Observer<T> {
     }
 
     public CheckAndRun(param: T): void {
-        // Logger.silly(`Checking Observer ${this.name}.`);
         if (this.Check(param)) {
-            // Logger.silly(`Running Observer ${this.name}.`);
             try {
                 this.Run(param);
             } catch (err) {

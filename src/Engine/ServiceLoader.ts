@@ -26,7 +26,7 @@ export default class ServiceLoader {
                 if (!(instance instanceof Service)) throw Error(`Module ${file} does not inherit from Service.`);
                 const service = instance as Service;
                 this.services.set(serviceClass.default, service);
-                Logger.debug(`Registered service ${service.name}`);
+                Logger.silly(`Registered service ${service.name}`);
             } catch (e) {
                 Logger.error(`Tried to load a non Service: ${pathToFile}`, e);
             }

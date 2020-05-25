@@ -1,5 +1,6 @@
-import { CommandoMessage } from "discord.js-commando";
 import { Message, GuildMember } from "discord.js";
+import { CommandoMessage } from "discord.js-commando";
+import { isRefType } from "@typegoose/typegoose";
 import moment from "moment";
 
 import CorniCommand from "../../Engine/CorniCommand";
@@ -34,6 +35,7 @@ export default class MutesCommand extends CorniCommand {
         if (mutes.length === 0) return msg.reply("no ongoing mute.");
         let res = `**list of ongoing mutes:**\n`;
         for (const mute of mutes) {
+            if (!isRefType(mute.user) || !isRefType(mute.author)) throw new Error("The mute has no user or no author");
             const user = await this.client.users.fetch(mute.user);
             const author = await this.client.users.fetch(mute.author);
             const remainingTime = Math.ceil(moment(mute.dateEnd).diff(moment(), "seconds", true));
@@ -47,8 +49,9 @@ export default class MutesCommand extends CorniCommand {
         if (mutes.length === 0) return msg.reply(`${member.user.tag} has received no mute.`);
         let res = `**list of mutes ${member.user.tag} has received:**\n`;
         for (const mute of mutes) {
+            if (!isRefType(mute.author)) throw new Error("The mute has no author");
             const author = await this.client.users.fetch(mute.author);
-            const date = moment(mute.createdAt);
+            const date = moment(mute.createdAt as Date);
             const duration = Math.round(moment(mute.dateEnd).diff(date, "seconds", true));
             res += `• [${date.fromNow()}]\t${duration}s\t(by ${author.tag}) - Reason: ${mute.reason}\n`;
         }

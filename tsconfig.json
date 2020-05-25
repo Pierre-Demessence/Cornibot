@@ -1,35 +1,36 @@
 {
     "compilerOptions": {
-        "allowJs": true,
+        // Compiling options
+        "target": "es2018",
+        "module": "commonjs",
+        "moduleResolution": "node",
         "baseUrl": ".",
+        "sourceMap": true,
+        // Other options
+        "allowJs": true,
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
+        "preserveSymlinks": true,
+        "resolveJsonModule": true,
         "outDir": "dist",
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/typings",
+        ],
         "paths": {
             "*": [
                 "node_modules/*"
-            ]
+            ],
         },
-        "preserveSymlinks": true,
-        "resolveJsonModule": true,
-        "sourceMap": true,
+        // Strict checking options
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
         "strict": true,
-        "target": "es6",
-        "types": [
-            "jest"
-        ],
     },
     "include": [
         "src/**/*.ts",
+        "src/typings",
         "tests/**/*.ts",
     ],
-    "exclude": [
-        "node_modules/*"
-    ]
 }
