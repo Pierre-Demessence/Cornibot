@@ -41,7 +41,7 @@
     ├── Engine/     # Main code of the bot.
     ├── Observers/  # Observers check user input based on an pattern and run code. One file per Observer.
     ├── Services/   # Services are launched at the start of the app and run without user input. One file per Service. They can be accessed from Commands and Observers.
-    └── Utils/      # Utility code that is not dependant on the bot.
+    └── Utils/      # Utility code that is not dependent on the bot.
 ```
 
 ## Notes
