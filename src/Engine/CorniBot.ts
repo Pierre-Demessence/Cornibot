@@ -2,6 +2,7 @@ import { Guild } from "discord.js";
 import { CommandoClient, FriendlyError } from "discord.js-commando";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import express from "express";
 import path from "path";
 
 import Logger from "../Utils/Logger";
@@ -9,6 +10,7 @@ import Config from "./Config";
 import ObserverLoader from "./ObserverLoader";
 import ServiceLoader from "./ServiceLoader";
 import Service from "./Service";
+import routes from "../WebServer/Routes";
 
 export default class Cornibot extends CommandoClient {
     private observerLoader: ObserverLoader;
@@ -85,6 +87,12 @@ export default class Cornibot extends CommandoClient {
         }
         this.serviceLoader.StartServices();
         this.observerLoader.StartObservers();
+
+        const app = express();
+
+        app.use(routes);
+
+        app.listen(process.env.PORT, () => Logger.info(`WebServer listening on port ${process.env.PORT}`));
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,0 +1,14 @@
+{
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "i18n-ally.localesPaths": "src/locales",
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.sourceLanguage": "fr",
+    "i18n-ally.includeSubfolders": true,
+    "i18n-ally.displayLanguage": "fr",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "sonarlint.connectedMode.project": {
+        "projectKey": "caregame-dev_client"
+    }
+}
