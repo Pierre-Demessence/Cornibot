@@ -40,7 +40,7 @@
         "mongodb-memory-server": "^6.6.1",
         "mongoose": "^5.9.15",
         "ms": "^2.1.2",
-        "node-fetch": "^2.6.0",
+        "node-fetch": "^2.6.1",
         "reflect-metadata": "^0.1.13",
         "rss-parser": "^3.8.0",
         "sprintf-js": "^1.1.2",
