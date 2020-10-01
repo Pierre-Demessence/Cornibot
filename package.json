@@ -38,7 +38,7 @@
         "lodash": "^4.17.19",
         "moment": "^2.26.0",
         "mongodb-memory-server": "^6.6.1",
-        "mongoose": "^5.9.15",
+        "mongoose": "^5.10.7",
         "ms": "^2.1.2",
         "node-fetch": "^2.6.1",
         "reflect-metadata": "^0.1.13",
