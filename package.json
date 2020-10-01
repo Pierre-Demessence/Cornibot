@@ -36,7 +36,7 @@
         "discord.js-commando": "github:discordjs/Commando",
         "dotenv-safe": "^8.2.0",
         "lodash": "^4.17.19",
-        "moment": "^2.26.0",
+        "moment": "^2.29.0",
         "mongodb-memory-server": "^6.6.1",
         "mongoose": "^5.9.15",
         "ms": "^2.1.2",
