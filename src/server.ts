@@ -1,11 +1,11 @@
 import "reflect-metadata";
-require("dotenv-safe").config();
-
+import dotenv from "dotenv";
 import moment from "moment";
 
 import Cornibot from "./Engine/CorniBot";
 import Logger from "./Utils/Logger";
 
+dotenv.config();
 moment.locale("en");
 
 process.on("uncaughtException", async (err) => {

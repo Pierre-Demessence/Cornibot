@@ -1,10 +1,9 @@
 import { CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
+import { oneLine } from "common-tags";
 
 import CorniCommand from "../../Engine/CorniCommand";
 import Cornibot from "../../Engine/CorniBot";
-
-const oneLine = require("common-tags").oneLine;
 
 export default class AddNumbersCommand extends CorniCommand {
     constructor(client: Cornibot) {

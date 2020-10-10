@@ -6,7 +6,7 @@ import Service from "./Service";
 import Cornibot from "./CorniBot";
 
 export default class ServiceLoader {
-    private services: Map<Function, Service> = new Map();
+    private services: Map<new (...args: unknown[]) => Service, Service> = new Map();
     private client: Cornibot;
 
     constructor(client: Cornibot, pathToLoad: string) {
@@ -37,8 +37,7 @@ export default class ServiceLoader {
         this.services.forEach((service) => service.Run());
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public GetService<T extends Service>(type: new (...args: any[]) => T): T | undefined {
+    public GetService<T extends Service>(type: new (...args: unknown[]) => T): T | undefined {
         return this.services.get(type) as T;
     }
 }
