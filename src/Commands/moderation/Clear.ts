@@ -1,5 +1,5 @@
 import { CommandoMessage } from "discord.js-commando";
-import { Message } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 
 import CorniCommand from "../../Engine/CorniCommand";
 import Cornibot from "../../Engine/CorniBot";
@@ -36,10 +36,10 @@ export default class ClearCommand extends CorniCommand {
             const messagesToDelete = await msg.channel.messages.fetch({ after: args.numbers.id });
             // Add the message to the list so it's deleted too
             messagesToDelete.set(args.numbers.id, args.numbers.message);
-            await msg.channel.bulkDelete(messagesToDelete);
+            await (msg.channel as TextChannel).bulkDelete(messagesToDelete);
         }
         // Otherwise delete the X last messages +1 because the user just wrote the command
-        else await msg.channel.bulkDelete(args.numbers + 1);
+        else await (msg.channel as TextChannel).bulkDelete(args.numbers + 1);
         return msg.say("Messages deleted.");
     }
 }
